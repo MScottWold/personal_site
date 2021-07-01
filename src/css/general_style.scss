@@ -1,0 +1,133 @@
+/* style */
+html {
+  scroll-behavior: smooth;
+  height: 100%;
+}
+
+body {
+  position: relative;
+  height: 100%;
+  font-family: 'Lato', sans-serif;
+  background-color: $dark-blue;
+  color: $light-gray;
+}
+
+*:focus-visible {
+  outline: 1px dashed $deep-pink;
+  outline-offset: 2px;
+}
+
+#background-img {
+  position: fixed;
+  display: block;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: -10;
+}
+
+section {
+  min-height: 120vh;
+}
+
+.section-title {
+  position: relative;
+  margin: 15px;
+  color: $dark-green;
+  font-family: 'Bebas Neue';
+  font-size: 4em;
+  
+  &::before {
+    content: "\22A3\ ";
+    color: $light-gray;
+
+  }
+
+  &::after {
+    content: " \22A2";
+    color: $light-gray;
+
+  }
+}
+
+section > p:first-of-type {
+  margin: 15px 15px 35px 15px;
+  font-size: 1.5em;
+  color: $light-gray;
+}
+
+.hidden {
+  display: none;
+}
+
+.invisible {
+  opacity: 0;
+  transition: opacity 0.3s linear;
+}
+
+.text-wrapper {
+  p {
+    margin-bottom: 1em;
+
+    &:last-of-type {
+      margin-bottom: 0;
+    }
+  }
+}
+
+img {
+  width: 100%;
+  height: auto;
+}
+
+.text-link {
+  text-decoration: underline;
+  color: $deep-pink;
+}
+
+.tech-stack {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  margin-top: 10px;
+  height: 60px;
+  width: 60%;
+
+  li {
+    flex: 1 0 33%;
+    position: relative;
+    padding-left: 15px;
+  }
+
+  li::before {
+    content: "\00BB";
+    position: absolute;
+    left: 0;
+    line-height: 1em;
+    color: $deep-pink;
+  }
+}
+
+[class$="icon"] {
+  width: 24px;
+  height: 24px;
+  fill: $light-gray;
+}
+
+.twitter-icon:hover {
+  fill: #1DA1F2;
+}
+
+.linkedin-icon:hover {
+  fill: #0E76A8;
+}
+
+.github-icon:hover {
+  fill: #fff;
+}
+
+.email-icon:hover,
+.external-link-icon:hover {
+  fill: $deep-pink;
+}

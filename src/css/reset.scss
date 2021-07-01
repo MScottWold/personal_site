@@ -1,0 +1,19 @@
+/* Reset */
+html, body, header, section, nav,
+h1, h2, h3, a, p, figure, figcaption,
+ul, li, div, button {
+  margin: 0;
+  border: 0;
+  padding: 0;
+  outline: 0;
+  box-sizing: inherit;
+  font: inherit;
+  text-decoration: inherit;
+  text-align: inherit;
+  color: inherit;
+  background: transparent;
+}
+
+ul {
+  list-style: none;
+}

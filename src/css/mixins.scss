@@ -1,0 +1,26 @@
+@mixin fadeIn($name, $from, $to) {
+  @keyframes #{$name} {
+    0% { opacity: $from; }
+    100% { opacity: $to; }
+  }
+}
+
+@mixin underline($startColor, $endColor) {
+  background-image:linear-gradient(to right, $startColor, $endColor);
+  background-size: 0% 3px;
+  background-position:bottom left;
+  background-repeat:no-repeat;
+  transition: background-size 0.5s ease;
+
+  &:hover {
+    background-size: 100% 3px;
+  }
+}
+
+@mixin activeUnderline($startColor, $endColor) {
+  @include underline($startColor, $endColor);
+
+  &.active {
+    background-size: 100% 3px;
+  }
+}

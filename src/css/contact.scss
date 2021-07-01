@@ -1,0 +1,26 @@
+#contact {
+  position: relative;
+  min-height: calc(100vh - 60px);
+}
+
+#contact-me {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgba($med-blue, 0.25);
+  padding: 20px;
+  border-radius: 3px;
+
+  p {
+    text-align: center;
+    font-size: 1.5em;
+    color: $deep-pink;
+  }
+
+  [class$="icon"] {
+    width: 60px;
+    height: 60px;
+    margin: 20px;
+  }
+}

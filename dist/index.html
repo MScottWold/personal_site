@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mitchell Wold</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <!-- For local dev -->
+  <!-- <script src="./jquery-3.6.0.min.js"></script> -->
+  <script src="./bundle.js"></script>
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Lato&display=swap" rel="stylesheet">
+</head>
+<body>
+<!-- Define Icon System -->
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <defs>
+    <symbol viewBox="0 0 24 24" id="linkedin">
+      <title>LinkedIn Logo</title>
+      <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
+    </symbol>
+    <symbol viewBox="0 0 24 24" id="github">
+      <title>Github Logo</title>
+      <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
+    </symbol>
+    <symbol viewBox="0 0 24 24" id="twitter">
+      <title>Twitter Logo</title>
+      <path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z" />
+    </symbol>
+    <symbol viewBox="0 0 24 24" id="external-link">
+      <title>External Link</title>
+      <path d="M6.188 8.719c.439-.439.926-.801 1.444-1.087 2.887-1.591 6.589-.745 8.445 2.069l-2.246 2.245c-.644-1.469-2.243-2.305-3.834-1.949-.599.134-1.168.433-1.633.898l-4.304 4.306c-1.307 1.307-1.307 3.433 0 4.74 1.307 1.307 3.433 1.307 4.74 0l1.327-1.327c1.207.479 2.501.67 3.779.575l-2.929 2.929c-2.511 2.511-6.582 2.511-9.093 0s-2.511-6.582 0-9.093l4.304-4.306zm6.836-6.836l-2.929 2.929c1.277-.096 2.572.096 3.779.574l1.326-1.326c1.307-1.307 3.433-1.307 4.74 0 1.307 1.307 1.307 3.433 0 4.74l-4.305 4.305c-1.311 1.311-3.44 1.3-4.74 0-.303-.303-.564-.68-.727-1.051l-2.246 2.245c.236.358.481.667.796.982.812.812 1.846 1.417 3.036 1.704 1.542.371 3.194.166 4.613-.617.518-.286 1.005-.648 1.444-1.087l4.304-4.305c2.512-2.511 2.512-6.582.001-9.093-2.511-2.51-6.581-2.51-9.092 0z" />
+    </symbol>
+    <symbol viewBox="0 0 24 24" id="email-link">
+      <title>Email Link</title>
+      <path d="M12 12.713l-11.985-9.713h23.971l-11.986 9.713zm-5.425-1.822l-6.575-5.329v12.501l6.575-7.172zm10.85 0l6.575 7.172v-12.501l-6.575 5.329zm-1.557 1.261l-3.868 3.135-3.868-3.135-8.11 8.848h23.956l-8.11-8.848z" />
+    </symbol>
+  </defs>
+</svg>
+<div id="background-img">
+  <canvas id="background-canvas"></canvas>
+</div>
+<header>
+  <nav id="nav-menu" class="inert">
+    <div id="menu-optns" class="inert">
+      <a class="navlink" href="#about">About</a>
+      <a class="navlink" href="#projects">Projects</a>
+      <a class="navlink" href="#experience">Experience</a>
+      <a class="navlink" href="#contact">Contact</a>
+    </div>
+    <button id="menu-btn">
+      <div class="bar-1 nav-ctr"></div>
+      <div class="bar-2 nav-ctr"></div>
+      <div class="bar-3 nav-ctr"></div>
+    </button>
+  </nav>
+</header>
+<main>
+  <section id="intro">
+    <div class="greeting">
+      <h1>hi, i'm mitchell</h1>
+      <div class="rotatable-container">
+        <ul class="rotatable">
+          <li class="front">web developer</li>
+          <li class="next">scientist</li>
+          <li class="waiting">builder</li>
+          <li class="waiting">business professional</li>
+          <li class="back">creator</li>
+          <li class="bottom">outdoorsman</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+  <section id="about">
+    <h1 class="section-title">About Me</h1>
+    <div id="bio">
+      <div class="text-wrapper">
+        <p>
+          Hello! My name is Mitchell. I'm a web developer based in Spokane, WA. 
+          I'm also a trained scientist with a Ph.D. in neuroscience. In 2020, I 
+          left my business development role in biotech to pursue web and 
+          software development full time.
+        </p>
+        <p>
+          The uniting theme of my career is a passion for mastering new 
+          technologies and techniques to solve interesting and complex problems.
+        </p>
+        <p>
+          Here are a few technologies I've been having fun with:
+        </p>
+        <ul class="tech-stack">
+          <li>Ruby</li>
+          <li>Rails</li>
+          <li>Javascript</li>
+          <li>React</li>
+          <li>Redux</li>
+        </ul>
+      </div>
+      <div class="img-wrapper">
+        <img src="./images/me.jpg" alt="Picture of Mitchell and his dog Rusty">
+      </div>
+    </div>
+  </section>
+  <section id="projects">
+    <h1 class="section-title">Projects</h1>
+    <p>
+      Check out some of the things I've built.
+    </p>
+    <div id="projects-container">
+      <ul class="tab-list">
+        <li><h3>Digital</h3></li>
+        <li><a href="#ersatz-tribune" class="panel-title active">Ersatz Tribune</a></li>
+        <li><a href="#website" class="panel-title">This Website</a></li>
+        <li><a href="#repository" class="panel-title">Github Repo</a></li>
+        <li><h3>Analog</h3></li>
+        <li><a href="#publications" class="panel-title">Publications</a></li>
+        <li><a href="#mud-kitchen" class="panel-title">Mud Kitchen</a></li>
+      </ul>
+      <div class="projects-panel">
+        <div class="project active" id="ersatz-tribune">
+          <h3>The Ersatz Tribune</h3>
+          <div class="project-links">
+            <a href="https://ersatz-tribune.herokuapp.com/#/" 
+              rel="noopener"
+              target="_blank">
+              <div class="proj-img-wrapper">
+                <img src="./images/et_prev.png" alt="My Digital News Site">
+              </div>
+            </a>
+            <div class="link-icons">
+              <a href="https://ersatz-tribune.herokuapp.com/#/"
+                rel="noopener"
+                target="_blank">
+                <svg class="external-link-icon">
+                  <use xlink:href="#external-link"></use>
+                </svg>
+              </a>
+              <a href="https://github.com/MScottWold/ai_news" 
+                rel="noopener" 
+                target="_blank">
+                <svg class="github-icon">
+                  <use xlink:href="#github"></use>
+                </svg>
+              </a>
+            </div>
+          </div>
+          <div class="text-wrapper">
+            <p>
+              I'm passionate about the intersection of technology and society.
+            </p>
+            <p>
+              How does technology shape our information ecosystem? How does 
+              information shape our society? How do we vet our information and 
+              sources?
+            </p>
+            <p>
+              The 
+              <a class="text-link"
+                href="https://ersatz-tribune.herokuapp.com/#/" 
+                rel="noopener"
+                target="_blank">Ersatz Tribune</a> 
+              is an online publication where all the articles are written by a
+              <a class="text-link" 
+                href="https://deepai.org/machine-learning-model/text-generator"
+                rel="noopener"
+                target="_blank">language model based on GPT-2</a>.
+              It's meant to mimic the look of a traditional publication, but 
+              without any real content.
+            </p>
+            <p>Technologies used:</p>
+            <ul class="tech-stack">
+              <li>HTML</li>
+              <li>CSS</li>
+              <li>Javascript</li>
+              <li>React</li>
+              <li>ReactRouter</li>
+              <li>Redux</li>
+              <li>Ruby</li>
+              <li>Rails</li>
+              <li>S3</li>
+            </ul>
+          </div>
+        </div>
+        <div class="project" id="website">
+          <h3>This Website</h3>
+          <div class="project-links">
+            <div class="proj-img-wrapper">
+              <img src="./images/ps_prev.png" alt="my personal website">
+            </div>
+            <div class="link-icons">
+              <a href="https://github.com/MScottWold/personal_site" 
+                rel="noopener" 
+                target="_blank">
+                <svg class="github-icon">
+                  <use xlink:href="#github"></use>
+                </svg>
+              </a>
+            </div>
+          </div>
+          <div class="text-wrapper">
+            <p>Check out the code powering www.mitchellwold.com.</p>
+            <p>Technologies used: </p>
+            <ul class="tech-stack">
+              <li>HTML</li>
+              <li>CSS</li>
+              <li>Javascript</li>
+              <li>jQuery</li>
+            </ul>
+          </div>
+        </div>
+        <div class="project" id="repository">
+          <h3>More to Come...</h3>
+          <div class="project-links">
+            <a href="https://github.com/MScottWold"
+              rel="noopener"
+              target="_blank">
+              <div class="proj-img-wrapper">
+                <img src="./images/gh_prev.png" alt="My github">
+              </div>
+            </a>
+            <div class="link-icons">
+              <a href="https://github.com/MScottWold" 
+                rel="noopener" 
+                target="_blank">
+                <svg class="github-icon">
+                  <use xlink:href="#github"></use>
+                </svg>
+              </a>
+            </div>
+          </div>
+          <div class="text-wrapper">
+            <p>
+              I'll be adding more projects here, as I develop them. In the 
+              meantime, 
+              <a href="https://github.com/MScottWold"
+                class="text-link"
+                rel="noopener"
+                target="_blank">here</a>
+              is a a link to my GitHub repository.
+            </p>
+          </div>
+        </div>
+        <div class="project" id="publications">
+          <h3>Publications</h3>
+          <div class="proj-img-wrapper">
+            <img src="./images/pubs.png" alt="Publications">
+          </div>
+          <div class="text-wrapper">
+            <p>
+              My Ph.D. is in Neuroscience. Here are a few of my published 
+              papers:
+            </p>
+            <ul id="publication-list">
+              <li>
+                <a class="text-link"
+                  href="https://molecularneurodegeneration.biomedcentral.com/articles/10.1186/s13024-016-0141-0" rel="noopener"
+                  target="_blank">
+                  My discovery of a novel regulatory step during autophagosome
+                  formation, which appears to be dysregulated in animal models 
+                  of Huntington's disease
+                </a>
+              </li>
+              <li>
+                <a class="text-link" href="https://www.proquest.com/openview/6b6b90e3ec22811b70d0bcf3f034f661/" rel="noopener"
+                  target="_blank">
+                  My doctoral work, which examined autophagy regulation and
+                  neurodegenerative disease
+                </a>
+              </li>
+              <li>
+                <a class="text-link" href="https://journals.plos.org/plosgenetics/article?id=10.1371/journal.pgen.1004626"
+                  rel="noopener" target="_blank">
+                  Research describing the role of Beclin-1 in autophagic
+                  signaling and Vps34 activity
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="project" id="mud-kitchen">
+          <h3>Mud Kitchen</h3>
+          <div class="gallery">
+            <div class="thumbs">
+              <a class="thumb-panel" data-idx="0">
+                <div class="img-thumb">
+                  <img src="./images/mk_1_thumb.jpg" alt="mud kitchen draft">
+                </div>
+              </a>
+              <a class="thumb-panel" data-idx="1">
+                <div class="img-thumb">
+                  <img src="./images/mk_2_thumb.jpg" alt="mud kitchen final">
+                </div>
+              </a>
+              <a class="thumb-panel" data-idx="2">
+                <div class="img-thumb">
+                  <img src="./images/mk_3_thumb.jpg" alt="mud kitchen parts">
+                </div>
+              </a>
+              <a class="thumb-panel" data-idx="3">
+                <div class="img-thumb">
+                  <img src="./images/mk_4_thumb.jpg" alt="mud kitchen framing">
+                </div>
+              </a>
+              <a class="thumb-panel" data-idx="4">
+                <div class="img-thumb">
+                  <img src="./images/mk_5_thumb.jpg" alt="mud kitchen progress">
+                </div>
+              </a>
+              <a class="thumb-panel" data-idx="5">
+                <div class="img-thumb">
+                  <img src="./images/mk_6_thumb.jpg" alt="mud kitchen">
+                </div>
+              </a>
+            </div>
+            <div class="modal">
+              <div class="modal-content">
+                <nav id="modal-nav">
+                  <button id="prev-img" class="nav-preview" data-action="prev" data-delta-idx="-1">&lt;</button>
+                  <button id="close-modal" class="close-modal" data-action="close">X</button>
+                  <button id="next-img" class="nav-preview" data-action="next" data-delta-idx="1">&gt;</button>
+                </nav>
+                <figure class="img-preview">
+                  <div class="full-img">
+                    <img src="./images/mk_1.jpg" alt="mud kitchen draft">
+                  </div>
+                  <figcaption>
+                    This was the initial concept; two sinks were necessary so 
+                    each nephew could have their own space.
+                  </figcaption>
+                </figure>
+                <figure class="img-preview">
+                  <div class="full-img">
+                    <img src="./images/mk_2.jpg" alt="mud kitchen final">
+                  </div>
+                  <figcaption>
+                    This is the final redesign. After a few iterations, I 
+                    settled on a concept with some fun features: "burners" to 
+                    cook the mud pies, cabinets for storage, hooks to hang pots 
+                    and pans, and a better overall aesthetic.
+                  </figcaption>
+                </figure>
+                <figure class="img-preview">
+                  <div class="full-img">
+                    <img src="./images/mk_3.jpg" alt="mud kitchen parts">
+                  </div>
+                  <figcaption>
+                    Breaking the project into smaller, more manageable tasks 
+                    made the whole project easier. 
+                  </figcaption>
+                </figure>
+                <figure class="img-preview">
+                  <div class="full-img">
+                    <img src="./images/mk_4.jpg" alt="mud kitchen framing">
+                  </div>
+                  <figcaption>
+                    The frame is less visually exciting, but easily the most 
+                    important part of the whole project. It's impact is felt by 
+                    every downstream part, so getting it right was crucial.
+                  </figcaption>
+                </figure>
+                <figure class="img-preview">
+                  <div class="full-img">
+                    <img src="./images/mk_5.jpg" alt="mud kitchen progress">
+                  </div>
+                  <figcaption>
+                    With the woodworking phase complete, it was time to move
+                    on to the staining and hardware phases.
+                  </figcaption>
+                </figure>
+                <figure class="img-preview">
+                  <div class="full-img">
+                    <img src="./images/mk_6.jpg" alt="mud kitchen">
+                  </div>
+                  <figcaption>
+                    The finished kitchen matched the design pretty closely. The 
+                    design of the plumbing was constrained by what was
+                    available at the hardware store.
+                  </figcaption>
+                </figure>
+              </div>
+            </div>
+          </div>
+          <div class="text-wrapper">
+            <p>
+              My nephews wanted a
+              <a class="text-link" 
+                href="https://www.fatherly.com/parenting/kids-mud-kitchen-backyard-must-have/"
+                rel="noopener"
+                target="_blank">mud kitchen</a>
+              and the lockdowns were a perfect time to learn some woodworking. 
+              There's no code here, but a good exercise in project planning. 
+            </p>
+            <p>
+              Click on the images to read the captions for more commentary on 
+              the process.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section id="experience">
+    <h1 class="section-title">Where I Worked</h1>
+    <p>
+      Want to see a detailed resume? 
+      <a class="text-link" href="#contact">Let's chat!</a>
+    </p>
+    <div id="timeline">
+      <div class="exp-desc">
+        <h3><span class="year">2006 - 2010</span>&nbsp&nbspWestern Washington University</h3>
+        <p>B.A. Behavioral Neuroscience</p>
+        <span>-</span>
+        <p>
+          At WWU, I worked in a lab where we studied dopamine levels in the 
+          medial prefrontal cortex and behavior in mouse and rat models of 
+          schizophrenia.
+        </p>
+      </div>
+      <div class="exp-desc">
+        <h3><span class="year">2010</span>&nbsp&nbspQuantaLife, Inc.</h3>
+        <p>Summer Intern</p>
+        <span>-</span>
+        <p>
+          The summer between undergrad and graduate school, I took an internship
+          at Quantalife. I worked with a team and built an early digital droplet 
+          PCR prototype to test the effects of various microfluidic circuits on 
+          droplet formation and transport.
+        </p>
+      </div>
+      <div class="exp-desc">
+        <h3><span class="year">2010 - 2016</span>&nbsp&nbspIcahn School of Medicine at Mount Sinai</h3>
+        <p>Ph.D. in Neuroscience</p>
+        <span>-</span>
+        <div class="text-wrapper">
+          <p>
+            My main research focus was on the basic biology of autophagy 
+            regulation and how neurodegenerative disease impacts autophagic 
+            signaling. 
+          </p>
+          <p>
+            Working in the lab trained me how to think like a scientist, how to 
+            troubleshoot difficult issues, how to use best data practices to 
+            draw sound conclusions, and how to work with teams across various
+            disciplines.
+          </p>
+        </div>
+      </div>
+      <div class="exp-desc">
+        <h3><span class="year">2016 - 2018</span>&nbsp&nbspThe Scripps Research Institute</h3>
+        <p>Technology Transfer Officer</p>
+        <span>-</span>
+        <div class="text-wrapper">
+          <p>
+            Technology Transfer is best described as the intersection between 
+            science, business, and law. The purpose of which is getting 
+            technology out of the lab and into a commercial setting. A big part 
+            of my role was to assessing the patentability and marketability of 
+            a technology developed at the institute.
+          </p>
+          <p>
+            Once a patent was filed, I was responsible for drafting and 
+            negotiating license agreements, confidentiality agreements, material 
+            transfer agreements, and research funding and option agreements with 
+            start up companies, established biotech companies, or other research 
+            institutes.
+          </p>
+        </div>
+      </div>
+      <div class="exp-desc">
+        <h3><span class="year">2018 - 2020</span>&nbsp&nbspThermo Fisher Scientific</h3>
+        <p>Business Development Manager</p>
+        <span>-</span>
+        <p>
+          At Thermo Fisher, I worked with a team that was responsible for 
+          bringing antibodies to market in the research or diagnostic space. My 
+          role was in negotiating license agreements for the commercial rights. 
+          I also worked to maintain existing agreements and relationships with 
+          our external patners.
+        </p>
+      </div>
+      <div class="exp-desc">
+        <h3><span class="year">2020 -</span>&nbsp&nbspWeb Development Career Switch</h3>
+        <span>-</span>
+        <div class="text-wrapper">
+          <p>
+            Early in 2020, I decided to make the career switch into software and
+            web development. This is something I've been dreaming about for
+            quite a long time.
+          </p>
+          <p>
+            I started out going through App Academy Open, which taught the 
+            foundations Ruby, Ruby on Rails, Rspec/Capybara, SQL, Git, HTML, 
+            CSS/SCSS, Javascript, and React/Redux.Then moved on to other 
+            online resources to hone my skill set.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section id="contact">
+    <h1 class="section-title hideable">What's Next?</h1>
+    <div id="contact-me" class="hideable">
+      <p>contact me</p>
+      <div>
+        <a href="mailto:mscottwold@gmail.com"
+          rel="noopener"
+          target="_blank">
+          <svg class="email-icon">
+            <use xlink:href="#email-link"></use>
+          </svg>
+        </a>
+        <a href="https://www.linkedin.com/in/mitchell-wold/" 
+          rel="noopener" 
+          target="_blank">
+          <svg class="linkedin-icon">
+            <use xlink:href="#linkedin"></use>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </section>
+  <footer class="hideable">
+    <ul>
+      <li>
+        <a href="https://www.linkedin.com/in/mitchell-wold/"
+          rel="noopener"
+          target="_blank">
+          <svg class="linkedin-icon">
+            <use xlink:href="#linkedin"></use>
+          </svg>
+        </a>
+      </li>
+      <li>
+        <a href="https://github.com/MScottWold"
+          rel="noopener"
+          target="_blank">
+          <svg class="github-icon">
+            <use xlink:href="#github"></use>
+          </svg>
+        </a>
+      </li>
+      <li>
+        <a href="https://twitter.com/Mitchell_Wold"
+          rel="noopener"
+          target="_blank">
+        <svg class="twitter-icon">
+          <use xlink:href="#twitter"></use>
+        </svg>
+        </a>
+      </li>
+    </ul>
+    <p>&copy mitchell wold</p>
+  </footer>
+</main>
+</body>
+</html>

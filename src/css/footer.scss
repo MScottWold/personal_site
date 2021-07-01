@@ -1,0 +1,18 @@
+footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+  border-top: 1px solid $steel;
+  background-color: $pewter;
+  color: $dark-blue;
+
+  ul {
+    display: flex;
+  }
+
+  [class$="icon"] {
+    fill: $dark-blue;
+    margin: 0 5px;
+  }
+}

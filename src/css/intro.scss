@@ -1,0 +1,75 @@
+/* Intro Panel */
+#intro {
+  padding-top: 30vh;
+  min-height: 100vh;
+  box-sizing: border-box;
+  font-size: 8.5vw;
+  font-family: 'Bebas Neue';
+  transition: height 2s linear;
+}
+
+.greeting > h1 {
+  margin-bottom: 0.1em;
+  color: $light-gray;
+}
+
+.greeting {
+  margin-left: 0.5em;
+}
+
+//Rotatable element
+
+.rotatable-container {
+  perspective: 15em;
+  perspective-origin: -5em -0.3em;
+  line-height: 1;
+}
+
+.rotatable {
+  transform-style: preserve-3d;
+  transform: translateZ(-1.5em);
+  -webkit-touch-callout: none;
+    -webkit-user-select: none;
+        -ms-user-select: none;
+            user-select: none;
+
+  & > * {
+    display: block;
+    position: absolute;
+    transition: 0.5s transform ease, 0.5s opacity ease;
+    padding-left: 0.34em;
+    color: $deep-pink;
+  }
+
+  .waiting {
+    transform: rotateX(-270deg) translateZ(0.5em);
+    filter: blur(2px);
+    opacity: 0;
+  }
+
+  .front {
+    visibility: visible;
+    transform: rotateX(0deg) translateZ(0.5em);
+    filter: none;
+    opacity: 1;
+  }
+
+  .bottom {
+    transform: rotateX(-90deg) translateZ(0.5em);
+    filter: blur(2px);
+    opacity: 0.5;
+  }
+
+  .back {
+    transform: rotateX(-180deg) translateZ(0.5em);
+    filter: blur(4px);
+    opacity: 0.1;
+  }
+
+  .next {
+    transform: rotateX(90deg) translateZ(0.5em);
+    filter: blur(0);
+    visibility: hidden;
+    opacity: 0;
+  }
+}

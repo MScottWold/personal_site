@@ -1,0 +1,74 @@
+#timeline {
+  margin: 120px 0;
+}
+
+.exp-desc {
+  position: relative;
+  margin-right: 55vw;
+  margin-top: -60px;
+  margin-left: 5vw;
+  padding: 20px;
+  border-radius: 3px;
+  background-color: rgba($med-blue, 0.25);
+  text-align: justify;
+
+  &:nth-of-type(2n) {
+    // background-color: red;
+    margin-left: 55vw;
+    margin-right: 5vw;
+
+    // circles
+    &::before {
+      left: calc(-5vw - 10px);
+    }
+
+    // lines
+    &::after {
+      left: calc(-5vw - 1px);
+    }
+  }
+
+  h3 {
+    margin-bottom: 5px;
+  }
+
+  // circles
+  &::before {
+    content: "";
+    position: absolute;
+    right: calc(-5vw - 10px);
+    top: 50%;
+    transform: translateY(-50%);
+    border-radius: 50%;
+    border: 2px solid $deep-pink;
+    box-sizing: border-box;
+    z-index: 1;
+    width: 20px;
+    height: 20px;
+    background-color: $dark-blue;
+  }
+
+  //lines
+  &::after {
+    content: "";
+    position: absolute;
+    top: -10px;
+    bottom: -10px;
+    right: calc(-5vw - 1px);
+    width: 2px;
+    background-color: $dark-green;
+  }
+
+  &:first-of-type::after {
+    top: 50%;
+  }
+
+  &:last-of-type::after {
+    bottom: 50%;
+  }
+}
+
+.year {
+  font-weight: bold;
+  color: $deep-pink;
+}
