@@ -8,8 +8,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack",
     "webpack": "webpack --mode=development --watch",
-    "sass": "node_modules/.bin/sass --watch src/css/style.scss:dist/style.css",
-    "sass-draw": "node_modules/.bin/sass --watch src/css/draw.scss:dist/draw.css"
+    "sass": "node_modules/.bin/sass --watch src/css/style.scss:css/style.css",
+    "sass-draw": "node_modules/.bin/sass --watch src/css/draw.scss:css/draw.css"
   },
   "keywords": [],
   "author": "",

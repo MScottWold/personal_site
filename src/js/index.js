@@ -4,7 +4,7 @@ import AnimatedBackground from './background/animated_background';
 
 $(() => {
   // Animated Canvas
-  const background = new AnimatedBackground('background-canvas', artboard)
+  const background = new AnimatedBackground('background-canvas', artboard);
 
   // Rotating element
   const rotatable = new Rotatable($('.rotatable > *'));
