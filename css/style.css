@@ -80,7 +80,8 @@ section > p:first-of-type {
 
 .invisible {
   opacity: 0;
-  transition: opacity 0.3s linear;
+  visibility: hidden;
+  transition: opacity 0.3s linear, visibility 0.3s 0.3s linear;
 }
 
 .text-wrapper p {
@@ -142,6 +143,14 @@ img {
 .email-icon:hover,
 .external-link-icon:hover {
   fill: #B41A4E;
+}
+
+.appear {
+  transition: opacity 0.5s linear, transform 0.5s linear;
+}
+.appear.appear-ready {
+  transform: translateY(60px);
+  opacity: 0;
 }
 
 /* Nav menu */
@@ -218,7 +227,7 @@ div[class^=bar] {
 }
 
 #nav-menu.expanded #menu-optns {
-  max-width: 350px;
+  max-width: 380px;
   margin-left: 1em;
 }
 #nav-menu.expanded .bar-1 {
@@ -615,10 +624,114 @@ div[class^=bar] {
   font-size: 1.5em;
   color: #B41A4E;
 }
-#contact-me [class$=icon] {
+
+#arrow {
+  position: relative;
+  font-size: 2.5em;
+  color: #2C5F5D;
+  animation: arrowMove 2s linear infinite;
+}
+
+@keyframes arrowMove {
+  0% {
+    top: 0;
+  }
+  50% {
+    top: 10px;
+  }
+  100% {
+    top: 0;
+  }
+}
+#contact-icons {
+  display: flex;
+}
+#contact-icons a {
+  display: block;
+  margin: 20px;
+  height: 60px;
+}
+#contact-icons [class$=icon] {
   width: 60px;
   height: 60px;
-  margin: 20px;
+}
+
+#ctr-panel {
+  position: absolute;
+  bottom: 0;
+  transition: bottom 0.2s ease;
+}
+#ctr-panel.lower {
+  bottom: -58px;
+}
+#ctr-panel button {
+  box-sizing: border-box;
+  color: #A8A7A7;
+  border-radius: 5px;
+  padding: 5px 8px;
+  margin: 5px;
+  background-image: linear-gradient(180deg, #2C5F5D, rgba(44, 95, 93, 0.4));
+  cursor: pointer;
+}
+#ctr-panel button:hover {
+  background-image: linear-gradient(180deg, rgba(44, 95, 93, 0.6), rgba(44, 95, 93, 0.4));
+}
+#ctr-panel button:active {
+  background-image: linear-gradient(180deg, rgba(44, 95, 93, 0.4), rgba(44, 95, 93, 0.2));
+}
+#ctr-panel button.active {
+  background-image: linear-gradient(180deg, rgba(71, 71, 71, 0.6), rgba(71, 71, 71, 0.2));
+}
+#ctr-panel button.active:active {
+  background-image: linear-gradient(180deg, rgba(71, 71, 71, 0.4), rgba(71, 71, 71, 0.4));
+}
+
+#bkgd-buttons {
+  height: 0;
+  overflow: hidden;
+  transition: height 0.2s ease;
+}
+#bkgd-buttons.show {
+  height: 220px;
+}
+#bkgd-buttons label, #bkgd-buttons input {
+  cursor: pointer;
+  margin-left: 5px;
+  border-radius: 3px;
+}
+#bkgd-buttons label:hover {
+  background-color: rgba(44, 95, 93, 0.5);
+  padding-right: 5px;
+}
+#bkgd-buttons p, #bkgd-buttons label {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+#bkgd-buttons p {
+  margin: 0 5px;
+  font-size: 0.85em;
+}
+#bkgd-buttons p:last-of-type {
+  text-align: right;
+  margin-bottom: 5px;
+}
+
+#bkgd-modes {
+  display: flex;
+  flex-direction: column;
+  margin: 5px 0;
+}
+#bkgd-modes button {
+  margin: 0 5px;
+  border-radius: 0;
+}
+#bkgd-modes button:first-of-type {
+  border-radius: 5px 5px 0 0;
+}
+#bkgd-modes button:last-of-type {
+  border-radius: 0 0 5px 5px;
 }
 
 footer {

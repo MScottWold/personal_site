@@ -1,6 +1,5 @@
-import { drawArtboard } from './background/artboard';
-import AnimatedBackground from './background/animated_background';
+import CreateAnimatedBackground from './background/create_animated_background';
 
 $(() => {
-  new AnimatedBackground('my-canvas', drawArtboard, true);
+  new CreateAnimatedBackground('my-canvas');
 })

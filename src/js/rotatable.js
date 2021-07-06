@@ -5,14 +5,14 @@ class Rotatable {
     this.showIdx = 1;
   }
 
-  toggleAnimation() {
-    if (this.interval) {
-      this.interval = clearInterval(this.interval);
-    } else {
-      this.interval = setInterval(this._rotateClasses.bind(this), this.delay);
-    }
+  startAnimation() {
+    this.interval = setInterval(this._rotateClasses.bind(this), this.delay);
   }
-  
+
+  stopAnimation() {
+    this.interval = clearInterval(this.interval);
+  }
+
   _rotateClasses() {
     // get indices for each face of box; allows for any number of panels
     const maxLength = this.$faces.length;

@@ -63,7 +63,8 @@ section > p:first-of-type {
 
 .invisible {
   opacity: 0;
-  transition: opacity 0.3s linear;
+  visibility: hidden;
+  transition: opacity 0.3s linear, visibility 0.3s 0.3s linear;
 }
 
 .text-wrapper {
@@ -130,4 +131,13 @@ img {
 .email-icon:hover,
 .external-link-icon:hover {
   fill: $deep-pink;
+}
+
+.appear {
+  transition: opacity 0.5s linear, transform 0.5s linear;
+  
+  &.appear-ready {
+    transform: translateY(60px);
+    opacity: 0;
+  }
 }

@@ -1,9 +1,12 @@
 class Shape {
-  constructor(pointIds, points, options, line, fill) {
-    this.points = pointIds.map(id => points[id]);
+  constructor(pointIds, points, options, type) {
+    if (pointIds[0].constructor.name === "Point") {
+      this.points = pointIds;
+    } else {
+      this.points = pointIds.map(id => points[id]);
+    }
     this.options = options;
-    this.line = line;
-    this.fill = fill;
+    this.type = type;
   }
 
   draw(ctx) {
@@ -18,19 +21,22 @@ class Shape {
       ctx.lineTo(x_pos, y_pos);
     }
 
-    if (this.fill) {
+    if (this.type === 'polygon') {
       ctx.closePath();
       ctx.fillStyle = this.options.fillColor;
       ctx.fill();
     }
 
-    if (this.line) {
+    if (this.type === 'line') {
       ctx.lineWidth = this.options.lineWidth;
       ctx.strokeStyle = this.options.strokeColor;
       ctx.stroke();
     }
   }
-}
 
+  removePoint(point) {
+    this.points = this.points.filter((pt) => pt !== point);
+  }
+}
 
 export default Shape;

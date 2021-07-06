@@ -1,0 +1,93 @@
+#ctr-panel {
+  position: absolute;
+  bottom: 0;
+  transition: bottom 0.2s ease;
+
+  &.lower {
+    bottom: -58px;
+  }
+
+  button {
+    box-sizing: border-box;
+    color: $light-gray;
+    border-radius: 5px;
+    padding: 5px 8px;
+    margin: 5px;
+    background-image: linear-gradient(180deg, $dark-green, rgba($dark-green, 0.4));
+    cursor: pointer;
+
+    &:hover {
+      background-image: linear-gradient(180deg, rgba($dark-green, 0.6), rgba($dark-green, 0.4));
+    }
+
+    &:active {
+      background-image: linear-gradient(180deg, rgba($dark-green, 0.4), rgba($dark-green, 0.2));
+    }
+
+    
+    &.active {
+      background-image: linear-gradient(180deg, rgba($steel, 0.6), rgba($steel, 0.2));
+      
+      &:active {
+        background-image: linear-gradient(180deg, rgba($steel, 0.4), rgba($steel, 0.4));
+      }
+    }
+  }
+}
+
+#bkgd-buttons {
+  height: 0;
+  overflow: hidden;
+  transition: height 0.2s ease;
+
+  &.show {
+    height: 220px;
+  }
+
+  label, input {
+    cursor: pointer;
+    margin-left: 5px;
+    border-radius: 3px;
+  }
+
+  label:hover {
+    background-color: rgba($dark-green, 0.5);
+    padding-right: 5px;
+  }
+  
+  p, label {
+    -webkit-touch-callout: none;
+      -webkit-user-select: none;
+          -ms-user-select: none;
+              user-select: none;
+  }
+
+  p {
+    margin: 0 5px;
+    font-size: 0.85em;
+
+    &:last-of-type {
+      text-align: right;
+      margin-bottom: 5px;
+    }
+  }
+}
+
+#bkgd-modes {
+  display: flex;
+  flex-direction: column;
+  margin: 5px 0;
+
+  button {
+    margin: 0 5px;
+    border-radius: 0;
+
+    &:first-of-type {
+      border-radius: 5px 5px 0 0;
+    }
+
+    &:last-of-type {
+      border-radius: 0 0 5px 5px;
+    }
+  }
+}

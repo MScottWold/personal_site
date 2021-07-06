@@ -1,5 +1,6 @@
 class Point {
   constructor(initialX, initialY, id, canvas, mouse) {
+    // keeping track of inital x and y allows for scaling the image
     this.initialX = this.x = this.cx = initialX;
     this.initialY = this.y = this.cy = initialY;
     this.id = id;
@@ -17,25 +18,9 @@ class Point {
     const distanceFactor = Point.speed * Math.min(elapsed, 33);
     let dx, dy;
 
-    if (distToMouse < 100) {
-
-      /**
-       * setting wander as a boolean value allows point to restart it's normal
-       * motion once it gets close to the center, rather than the perimeter
-       */
-      this.wander = false;
-      if (distToMouse < 1) {
-
-        // If the point is close enough to the mouse, don't move it
-        dx = 0;
-        dy = 0;
-      } else {
-
-        // Move point toward mouse
-        let adjFactor = 9 / distToMouse;
-        dx = -(adjFactor * (this.x - this.mouse.x));
-        dy = -(adjFactor * (this.y - this.mouse.y));
-      }
+    if (distToMouse < 100 && !this.mouse.ignore) {
+      this.moveToMouse(elapsed, distToMouse);
+      return;
 
     } else if (this.wander) {
 
@@ -64,6 +49,41 @@ class Point {
 
     this.x += dx * distanceFactor;
     this.y += dy * distanceFactor;
+  }
+
+  moveToMouse(elapsed, distanceToMouse) {
+    const distToMouse = distanceToMouse 
+      || this._distanceTo(this.mouse.x, this.mouse.y);
+
+    /**
+      * setting wander as a boolean value allows point to restart it's normal
+      * motion once it gets close to the center, rather than the perimeter
+      */
+    this.wander = false;
+    let dx, dy;
+
+    if (distToMouse < 1) {
+
+      // If the point is close enough to the mouse, don't move it
+      dx = 0;
+      dy = 0;
+    } else {
+
+      // Move point toward mouse
+      const adjFactor = 9 / distToMouse;
+      dx = -(adjFactor * (this.x - this.mouse.x));
+      dy = -(adjFactor * (this.y - this.mouse.y));
+    }
+
+    const distanceFactor = Point.speed * Math.min(elapsed, 33);
+    this.x += dx * distanceFactor;
+    this.y += dy * distanceFactor;
+  }
+
+  jumpToMouse() {
+    this.x = this.mouse.x;
+    this.y = this.mouse.y;
+    this.wander = false;
   }
 
   // Canvas will stretch and not scale
@@ -97,12 +117,46 @@ class Point {
     this.y = this.cy = y;
   }
 
+  twoClosestPoints(points) {
+    if (points.length <= 2) return [...points];
+
+    let closestPt = points[0];
+    let closestDist = this._distanceTo(closestPt.x, closestPt.y);
+    let secondClosestPt = points[1];
+    let secondClosestDist = this._distanceTo(
+      secondClosestPt.x,
+      secondClosestPt.y
+    );
+
+    // check order of closest points
+    if (closestDist > secondClosestDist) {
+      [closestPt, secondClosestPt] = [secondClosestPt, closestPt];
+      [closestDist, secondClosestDist] = [secondClosestDist, closestDist];
+    }
+
+    let pt, dist;
+    for (let i = 2; i < points.length; i++) {
+      pt = points[i];
+      dist = this._distanceTo(pt.x, pt.y);
+      if (dist < closestDist) {
+        secondClosestPt = closestPt;
+        secondClosestDist = closestDist;
+        closestPt = pt;
+        closestDist = dist;
+      } else if (dist < secondClosestDist) {
+        secondClosestPt = pt;
+        secondClosestDist = dist;
+      }
+    }
+
+    return [closestPt, secondClosestPt];
+  }
+
   _distanceTo(x, y) {
     const sideSq1 = (this.x - x) ** 2;
     const sideSq2 = (this.y - y) ** 2;
     return Math.sqrt(sideSq1 + sideSq2);
   }
-
 }
 
 Point.speed = 0.01;

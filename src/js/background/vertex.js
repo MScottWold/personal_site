@@ -9,16 +9,16 @@ class Vertex {
     ctx.arc(this.point.x, this.point.y, 4, 0, Math.PI * 2, false);
     ctx.closePath();
     
-    if (this.options.fillColor) {
-      ctx.fillStyle = this.options.fillColor;
+      if (this.point.wander) {
+        ctx.fillStyle = this.options.fillColor;
+      } else {
+        ctx.fillStyle = this.options.altFillColor;
+      }
       ctx.fill();
-    }
     
-    if (this.options.strokeColor) {
       ctx.lineWidth = this.options.lineWidth;
       ctx.strokeStyle = this.options.strokeColor;
       ctx.stroke();
-    }
   }
 
   label(ctx) {
