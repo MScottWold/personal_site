@@ -56,6 +56,7 @@ export const artboard = {
     vertices: {
       strokeColor: '#1F2833',
       fillColor: '#66FCF1',
+      altFillColor: '#B41A4E',
       lineWidth: 2,
       radius: 4
     },
@@ -67,7 +68,7 @@ export const artboard = {
   }
 };
 
-export const drawArtboard = {
+export const defaultArtboard = {
   points: {},
   lines: [],
   polygons: [],

@@ -3,21 +3,108 @@ import { artboard } from './background/artboard';
 import AnimatedBackground from './background/animated_background';
 
 $(() => {
-  // Animated Canvas
+  // Animated Background
   const background = new AnimatedBackground('background-canvas', artboard);
+
+  // Logic for Displaying Animated Background controls
+  const $hideableElements = $('.hideable');
+  const $ctrPanel = $('#ctr-panel');
+  let elementsHidden = false;
+
+  function toggleElementsVisibility() {
+    $hideableElements.toggleClass('invisible');
+    $ctrPanel.toggleClass('lower');
+    elementsHidden = !elementsHidden;
+  }
+
+  const $viewCtrPanelButton = $('#view-ctr-panel');
+  const $bkgdButtons = $('#bkgd-buttons');
+
+  function hideControls() {
+    $viewCtrPanelButton.removeClass('active').text('Show Controls');
+    $bkgdButtons.removeClass('show');
+  }
+
+  function showElements() {
+    toggleElementsVisibility();
+    hideControls();
+
+    $(document).off('scroll', showElements);
+  }
+
+  $viewCtrPanelButton.on('click', function () {
+    const $this = $(this);
+    $this.toggleClass('active');
+    if ($this.is('.active')) {
+      $this.text('Minimize Controls');
+      if (!elementsHidden) {
+        toggleElementsVisibility();
+        $(document).on('scroll', showElements);
+      }
+
+    } else {
+      $this.text('Show Controls');
+    }
+
+    $bkgdButtons.toggleClass('show');
+  });
+
+  // Changing Animated Background mode
+  const hideLinesOption = document.getElementById('hide-lines');
+  const $modeButtons = $('#bkgd-modes button');
+
+  $('#bkgd-modes').on('click', 'button', function (e) {
+    const $this = $(this);
+    background.changeMouseMode($this.data('bkgdMode'));
+    $modeButtons.removeClass('active');
+    $this.addClass('active');
+
+    // reset the background to its original form
+    if ($this.data('bkgdMode') === 'default') {
+      background.resetArtboard(artboard);
+      hideLinesOption.checked = false;
+      showElements();
+    }
+
+    hideControls();
+  })
+
+  hideLinesOption.addEventListener('click', () => background.toggleLines());
 
   // Rotating element
   const rotatable = new Rotatable($('.rotatable > *'));
-  rotatable.toggleAnimation();
+  rotatable.startAnimation();
+  let rotating = true;
+
+  // Only rotate the element when visible
+  const intro = document.getElementById('intro');
+  window.addEventListener('scroll', function () {
+    const pos = intro.getBoundingClientRect();
+    if (
+      pos.top < window.innerHeight 
+      && pos.bottom >= 0
+      && !rotating
+    ) {
+      rotatable.startAnimation();
+      rotating = true;
+    } else if (
+      pos.top < 0
+      && pos.bottom < 0
+      && rotating
+    ) {
+      rotatable.stopAnimation();
+      rotating = false;
+    }
+  });
   
-  // Nav menu button
+  // Navigation menu button
   $('#nav-menu').on('click', function (e) {
     if (!e.target.classList.contains('inert')) {
       $(this).toggleClass('expanded')
     }
   });
 
-  // Code for projects panel
+  // Projects panel
   const $tabList = $('.tab-list');
   let $activeLink = $tabList.find('a.active');
   let $panel = $($activeLink.attr('href'));
@@ -67,4 +154,23 @@ $(() => {
     $previews[newIdx].style.display = 'flex';
     currentPanelIdx = newIdx;
   });
+
+  // Selected elements pop in when scrolled to
+  let $appearReady = $('.appear-ready');
+  
+  function elementPopIn() {
+    $appearReady.each(function () {
+      const pos = this.getBoundingClientRect();
+      if (pos.top < (window.innerHeight * .65) || pos.bottom < 0) {
+        $(this).removeClass('appear-ready');
+        $appearReady = $('.appear-ready')
+      }
+    });
+
+    if ($appearReady.length === 0) {
+      $(window).off('scroll', elementPopIn);
+    }
+  }
+
+  $(window).on('scroll', elementPopIn);
 });

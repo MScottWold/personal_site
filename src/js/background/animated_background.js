@@ -1,12 +1,13 @@
 import Point from './point';
 import Vertex from './vertex';
 import Shape from './shape';
+import Mouse from './mouse';
+import { defaultArtboard } from './artboard';
 
 class AnimatedBackground {
-  constructor(tagId, artboard, drawMode = false) {
+  constructor(tagId, artboard = defaultArtboard) {
     this.canvas = {};
-    this.mouse = { x: 0, y: 0 };
-    this.drawMode = drawMode;
+    this.mouse = new Mouse;
     this.options = artboard.options;
     this.modified = false;
 
@@ -16,19 +17,78 @@ class AnimatedBackground {
     this._installListeners();
   }
 
-  addNewPoint(x, y) {
+  changeMouseMode(mode) {
+    this.mouse.mode = mode;
+  }
+
+  toggleLines() {
+    this.lines = [];
+    this.noLines = !this.noLines;
+  }
+
+  resetArtboard(artboard) {
+    this._initShapes(artboard)
+    this.modified = false;
+    this.noLines = false;
+  }
+
+  _removePoint(point) {
+    // remove point from points array
+    this.points = this.points.filter((pt) => pt !== point);
+
+    // remove associated vtx
+    this.vertices = this.vertices.filter((vtx) => vtx.point !== point);
+
+    // remove point from lines
+    this.lines.forEach((ln) => ln.removePoint(point));
+    this.lines = this.lines.filter((ln) => ln.points.length > 1);
+    
+    // remove point from polygons
+    this.polygons.forEach((plygn) => plygn.removePoint(point));
+    this.polygons = this.polygons.filter((plygn) => plygn.points.length > 1);
+  }
+
+  _addNewPoint(x, y) {
     this.modified = true;
+    const nextId = this.points.length >= 1 
+      ? this.points[this.points.length - 1].id + 1
+      : 0;
     const newPt = new Point( 
       x, 
       y, 
-      this.points.length,
+      nextId,
       this.canvas, 
       this.mouse 
     );
-    this.points.push(newPt);
 
-    // vertex will handle visual aspect
+    if (this.noLines) {
+      this.points.push(newPt);
+      this.vertices.push(new Vertex(newPt, this.options.vertices));
+      return;
+    }
+
+    // Connect new point to two closest points (if any)
+    const shapePoints = newPt.twoClosestPoints(this.points);
+    this.points.push(newPt);
     this.vertices.push(new Vertex(newPt, this.options.vertices));
+    if (shapePoints.length === 0) return;
+    if (shapePoints.length === 1) {
+      shapePoints.push(newPt);
+    } else {
+      shapePoints.splice(1, 0, newPt);
+    }
+    
+    this.lines.push(new Shape(
+      shapePoints,
+      this.points,
+      this.options.shapes,
+      'line'
+    ));
+  }
+
+  _teleportPoints() {
+    this.mouse.setToIgnore();
+    this.points.forEach((pt) => pt.jumpToMouse());
   }
 
   _initCanvas(tagId) {
@@ -45,14 +105,14 @@ class AnimatedBackground {
       const ptObj = new Point(
         points[id][0], 
         points[id][1],
-        id,
+        Number(id),
         this.canvas, 
         this.mouse
       );
       ptObj.scaleToArtboard();
       this.points.push(ptObj);
 
-      // vertex will handle visual aspect
+      // vertex will handle visual aspect of a point
       this.vertices.push(new Vertex(ptObj, this.options.vertices));
     }
 
@@ -61,8 +121,7 @@ class AnimatedBackground {
         pointIds, 
         this.points, 
         this.options.shapes, 
-        true, 
-        false
+        'line'
       )
     });
 
@@ -71,8 +130,7 @@ class AnimatedBackground {
         pointIds, 
         this.points, 
         this.options.shapes, 
-        false, 
-        true
+        'polygon'
       );
     });
   }
@@ -83,18 +141,31 @@ class AnimatedBackground {
     ctx.clearRect(0, 0, this.canvas.el.width, this.canvas.el.height);
 
     // order of shapes drawn is important for visual appeal
-    this.polygons.forEach((shape) => shape.draw(ctx))
-    this.lines.forEach((shape) => shape.draw(ctx))
+    this.polygons.forEach((shape) => shape.draw(ctx));
+    this.lines.forEach((shape) => shape.draw(ctx));
     this.vertices.forEach((vtx) => vtx.draw(ctx));
-    if (this.drawMode) {
-      this.vertices.forEach((vtx) => vtx.label(ctx));
+    if (!this.animStart) this.animStart = timestamp;
+    const elapsed = timestamp - this.animStart;
+    this.animStart = timestamp;
+
+    // Points' movement will depend on the mouse position and mode
+    if (this.mouse.mode === 'coalesce' && this.mouse.clicked === true) {
+      this.points.forEach(pt => pt.moveToMouse(elapsed));
     } else {
-      if (!this.animStart) this.animStart = timestamp;
-      const elapsed = timestamp - this.animStart;
-      this.animStart = timestamp;
-      this.points.forEach(pt => pt.update(elapsed));
-      window.requestAnimationFrame(this._drawArt.bind(this));
+      this.points.forEach(pt => {
+        if (
+          this.mouse.clicked
+          && this.mouse.mode === 'destroy'
+          && this.mouse.near(pt)
+        ) {
+          this._removePoint(pt);
+        } else {
+          pt.update(elapsed);
+        }
+      });
     }
+
+    window.requestAnimationFrame(this._drawArt.bind(this));
   }
 
   _resizeCanvas(newW, newH) {
@@ -111,61 +182,43 @@ class AnimatedBackground {
     }
   }
 
-  _showPoints() {
-    // Only used while creating artboard
-    const report = document.createElement('p');
-    report.style.backgroundColor = 'white';
-    report.style.color = 'black';
-    report.style.border = '2px solid black';
-    report.style.position = 'absolute';
-    report.style.top = 0;
-    report.style.zIndex = 10;
-    report.style.padding = '25px';
-    report.style.width = '100px';
-    report.style.maxHeight = '80vh';
-    report.style.overflow = 'scroll';
-
-    let pointList = '{\n';
-    this.points.forEach((pt, idx) => {
-
-      /**
-       * Drawn points are stored as percentages of width & height to allow for
-       * proper scaling
-       * */ 
-      const x = Math.round(pt.cx / this.canvas.el.width * 100);
-      const y = Math.round(pt.cy / this.canvas.el.height * 100);
-
-      pointList += `${idx}: [${x}, ${y}],\n`
-    });
-
-  
-    pointList += '};';
-    report.innerText = pointList;
-    document.body.appendChild(report);
-  }
-
   _installListeners() {
-    window.addEventListener('resize', function(e) {
+    window.addEventListener('resize', function () {
       this._resizeCanvas(window.innerWidth, window.innerHeight);
     }.bind(this));
 
-    document.addEventListener('mousemove', function(e) {
-      this.mouse.x = e.clientX;
-      this.mouse.y = e.clientY;
+    document.addEventListener('mousedown', function (e) {
+      // prevent chosen elements from reacting to click event
+      if (
+        e.target.localName === 'button'
+        || e.target.localName === 'input'
+        || e.target.localName === 'label'
+        || e.target.localName === 'a'
+        || e.target.dataset.ignoreClick
+      ) {
+        return;
+      }
+
+      this.mouse.clicked = true;
+      if (this.mouse.mode === 'emit') {
+        this._teleportPoints();
+      } else if (this.mouse.mode === 'create') {
+        this._addNewPoint(e.clientX, e.clientY);
+        this.mouse.setToIgnore(500);
+      }
+
     }.bind(this));
 
-    if (this.drawMode) {
-      document.addEventListener('click', function(e) {
-        this.addNewPoint(e.clientX, e.clientY);
-        this._drawArt();
-      }.bind(this));
+    document.addEventListener('mouseup', function () {
+      this.mouse.clicked = false;
+      if (this.mouse.mode === 'coalesce') {
+        this.mouse.setToIgnore();
+      }
+    }.bind(this));
 
-      document.addEventListener('keydown', function(e) {
-        if (e.code === 'Enter') {
-          this._showPoints();
-        }
-      }.bind(this))
-    }
+    document.addEventListener('mousemove', function (e) {
+      this.mouse.updatePos(e.clientX, e.clientY);
+    }.bind(this));
   }
 }
 
