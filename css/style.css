@@ -54,7 +54,7 @@ section {
 
 .section-title {
   position: relative;
-  margin: 15px;
+  padding: 15px;
   color: #2C5F5D;
   font-family: "Bebas Neue";
   font-size: 4em;
@@ -69,7 +69,7 @@ section {
 }
 
 section > p:first-of-type {
-  margin: 15px 15px 35px 15px;
+  padding: 15px 15px 35px 15px;
   font-size: 1.5em;
   color: #A8A7A7;
 }
@@ -625,24 +625,6 @@ div[class^=bar] {
   color: #B41A4E;
 }
 
-#arrow {
-  position: relative;
-  font-size: 2.5em;
-  color: #2C5F5D;
-  animation: arrowMove 2s linear infinite;
-}
-
-@keyframes arrowMove {
-  0% {
-    top: 0;
-  }
-  50% {
-    top: 10px;
-  }
-  100% {
-    top: 0;
-  }
-}
 #contact-icons {
   display: flex;
 }

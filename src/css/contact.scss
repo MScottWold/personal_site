@@ -19,19 +19,6 @@
   }
 }
 
-#arrow {
-  position: relative;
-  font-size: 2.5em;
-  color: $dark-green;
-  animation: arrowMove 2s linear infinite;
-}
-
-@keyframes arrowMove {
-  0% { top: 0; }
-  50% { top: 10px; }
-  100% { top: 0; }
-}
-
 #contact-icons {
   display: flex;
 

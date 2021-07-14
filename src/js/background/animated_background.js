@@ -67,23 +67,18 @@ class AnimatedBackground {
       return;
     }
 
-    // Connect new point to two closest points (if any)
+    /**
+     * Connect new point to two closest points (if any). Multipath lines are
+     * avoided for performance concerns
+     * */ 
     const shapePoints = newPt.twoClosestPoints(this.points);
     this.points.push(newPt);
     this.vertices.push(new Vertex(newPt, this.options.vertices));
-    if (shapePoints.length === 0) return;
-    if (shapePoints.length === 1) {
-      shapePoints.push(newPt);
-    } else {
-      shapePoints.splice(1, 0, newPt);
-    }
-    
-    this.lines.push(new Shape(
-      shapePoints,
+    shapePoints.forEach((pt) => this.lines.push(new Shape(
+      [pt, newPt],
       this.points,
-      this.options.shapes,
-      'line'
-    ));
+      this.options.shapes
+    )));
   }
 
   _teleportPoints() {
@@ -120,8 +115,7 @@ class AnimatedBackground {
       return new Shape(
         pointIds, 
         this.points, 
-        this.options.shapes, 
-        'line'
+        this.options.shapes
       )
     });
 
@@ -130,7 +124,7 @@ class AnimatedBackground {
         pointIds, 
         this.points, 
         this.options.shapes, 
-        'polygon'
+        true
       );
     });
   }
@@ -140,14 +134,28 @@ class AnimatedBackground {
 
     ctx.clearRect(0, 0, this.canvas.el.width, this.canvas.el.height);
 
-    // order of shapes drawn is important for visual appeal
+    // Order of shapes drawn is important for visual appeal
+
+    // Draw all shapes
+    ctx.lineWidth = this.options.shapes.lineWidth;
+    ctx.strokeStyle = this.options.shapes.strokeColor;
+    ctx.fillStyle = this.options.shapes.fillColor;
     this.polygons.forEach((shape) => shape.draw(ctx));
     this.lines.forEach((shape) => shape.draw(ctx));
+
+    // Draw all vertices
+    ctx.lineWidth = this.options.vertices.lineWidth;
+    ctx.strokeStyle = this.options.vertices.strokeColor;
     this.vertices.forEach((vtx) => vtx.draw(ctx));
+
+    // Calc elapsed time for smooth animation
     if (!this.animStart) this.animStart = timestamp;
-    const elapsed = timestamp - this.animStart;
+    const elapsed = Math.floor(timestamp - this.animStart);
     this.animStart = timestamp;
 
+    /**
+     * Move the logic below to the point object
+     */
     // Points' movement will depend on the mouse position and mode
     if (this.mouse.mode === 'coalesce' && this.mouse.clicked === true) {
       this.points.forEach(pt => pt.moveToMouse(elapsed));
@@ -200,13 +208,12 @@ class AnimatedBackground {
       }
 
       this.mouse.clicked = true;
-      if (this.mouse.mode === 'emit') {
+      if (this.mouse.mode === 'radiate') {
         this._teleportPoints();
       } else if (this.mouse.mode === 'create') {
         this._addNewPoint(e.clientX, e.clientY);
         this.mouse.setToIgnore(500);
       }
-
     }.bind(this));
 
     document.addEventListener('mouseup', function () {
