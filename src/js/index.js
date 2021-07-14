@@ -3,7 +3,9 @@ import { artboard } from './background/artboard';
 import AnimatedBackground from './background/animated_background';
 
 $(() => {
-  // Animated Background
+  /**
+   * Animated Background
+   * */ 
   const background = new AnimatedBackground('background-canvas', artboard);
 
   // Logic for Displaying Animated Background controls
@@ -71,7 +73,9 @@ $(() => {
 
   hideLinesOption.addEventListener('click', () => background.toggleLines());
 
-  // Rotating element
+  /**
+   * Rotating element
+   * */ 
   const rotatable = new Rotatable($('.rotatable > *'));
   rotatable.startAnimation();
   let rotating = true;
@@ -97,14 +101,18 @@ $(() => {
     }
   });
   
-  // Navigation menu button
+  /**
+   * Navigation menu button
+   */ 
   $('#nav-menu').on('click', function (e) {
     if (!e.target.classList.contains('inert')) {
       $(this).toggleClass('expanded')
     }
   });
 
-  // Projects panel
+  /**
+   * Projects panel
+   */ 
   const $tabList = $('.tab-list');
   let $activeLink = $tabList.find('a.active');
   let $panel = $($activeLink.attr('href'));
@@ -155,7 +163,9 @@ $(() => {
     currentPanelIdx = newIdx;
   });
 
-  // Selected elements pop in when scrolled to
+  /**
+   * Selected elements pop in when scrolled to
+   * */ 
   let $appearReady = $('.appear-ready');
   
   function elementPopIn() {
