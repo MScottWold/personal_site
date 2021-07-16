@@ -1,42 +1,29 @@
 #timeline {
-  margin: 120px 0;
+  padding: 20px 0 120px 0;
 }
 
 .exp-desc {
   position: relative;
-  margin-right: 55vw;
-  margin-top: -60px;
-  margin-left: 5vw;
-  padding: 20px;
-  border-radius: 3px;
+  margin: 15px 0 15px 10vw;
+  padding: 15px;
   background-color: rgba($med-blue, 0.25);
   text-align: justify;
 
-  &:nth-of-type(2n) {
-    // background-color: red;
-    margin-left: 55vw;
-    margin-right: 5vw;
-
-    // circles
-    &::before {
-      left: calc(-5vw - 10px);
-    }
-
-    // lines
-    &::after {
-      left: calc(-5vw - 1px);
-    }
-  }
-
   h3 {
     margin-bottom: 5px;
+    text-align: left;
+  }
+
+  .title {
+    font-style: italic;
+    text-align: left;
   }
 
   // circles
   &::before {
     content: "";
     position: absolute;
-    right: calc(-5vw - 10px);
+    left: calc(-5vw - 10px);
     top: 50%;
     transform: translateY(-50%);
     border-radius: 50%;
@@ -54,7 +41,7 @@
     position: absolute;
     top: -10px;
     bottom: -10px;
-    right: calc(-5vw - 1px);
+    left: calc(-5vw - 1px);
     width: 2px;
     background-color: $dark-green;
   }

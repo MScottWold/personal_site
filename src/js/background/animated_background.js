@@ -13,8 +13,9 @@ class AnimatedBackground {
 
     this._initCanvas(tagId);
     this._initShapes(artboard);
-    window.requestAnimationFrame(this._drawArt.bind(this));
+    this._scaleDown();
     this._installListeners();
+    window.requestAnimationFrame(this._drawArt.bind(this));
   }
 
   changeMouseMode(mode) {
@@ -129,6 +130,16 @@ class AnimatedBackground {
     });
   }
 
+  _scaleDown() {
+    const { scaleDown } = this.options;
+    if (scaleDown && window.innerWidth < scaleDown.maxWidth) {
+      const factor = scaleDown.factor;
+      this.options.vertices.lineWidth /= factor;
+      this.options.vertices.radius /= factor;
+      this.options.shapes.lineWidth /= factor;
+    }
+  }
+
   _drawArt(timestamp) {
     const { ctx } = this.canvas;
 
@@ -191,11 +202,13 @@ class AnimatedBackground {
   }
 
   _installListeners() {
-    window.addEventListener('resize', function () {
-      this._resizeCanvas(window.innerWidth, window.innerHeight);
-    }.bind(this));
+    if (window.innerWidth > 768) {
+      window.addEventListener('resize', function () {
+        this._resizeCanvas(window.innerWidth, window.innerHeight);
+      }.bind(this));
+    }
 
-    document.addEventListener('mousedown', function (e) {
+    document.addEventListener('pointerdown', function (e) {
       // prevent chosen elements from reacting to click event
       if (
         e.target.localName === 'button'
@@ -207,7 +220,7 @@ class AnimatedBackground {
         return;
       }
 
-      this.mouse.clicked = true;
+      this.mouse.click(e.clientX, e.clientY);
       if (this.mouse.mode === 'radiate') {
         this._teleportPoints();
       } else if (this.mouse.mode === 'create') {
@@ -216,15 +229,19 @@ class AnimatedBackground {
       }
     }.bind(this));
 
-    document.addEventListener('mouseup', function () {
-      this.mouse.clicked = false;
+    document.addEventListener('pointerup', function () {
+      this.mouse.resetPos();
       if (this.mouse.mode === 'coalesce') {
         this.mouse.setToIgnore();
       }
     }.bind(this));
 
-    document.addEventListener('mousemove', function (e) {
+    document.addEventListener('pointermove', function (e) {
       this.mouse.updatePos(e.clientX, e.clientY);
+    }.bind(this));
+
+    document.addEventListener('pointercancel', function () {
+      this.mouse.resetPos();
     }.bind(this));
   }
 }

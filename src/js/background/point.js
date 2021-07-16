@@ -20,7 +20,7 @@ class Point {
     let distToCenter;
     let dx, dy;
 
-    if (distToMouse < 100 && !this.mouse.ignore) {
+    if (this.mouse.x && distToMouse < 100 && !this.mouse.ignore) {
       this.moveToMouse(elapsed, distToMouse);
       return;
 
@@ -38,6 +38,7 @@ class Point {
       dy = Math.sin(this.rad);
     } else {
       distToCenter = this._distanceTo(this.cx, this.cy);
+      
       // Don't reset the point until it gets close to center
       if (distToCenter < Point.range * 0.25) {
         this.wander = true;

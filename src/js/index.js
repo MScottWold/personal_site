@@ -10,12 +10,13 @@ $(() => {
 
   // Logic for Displaying Animated Background controls
   const $hideableElements = $('.hideable');
-  const $ctrPanel = $('#ctr-panel');
+  const $contactSection = $('#contact');
   let elementsHidden = false;
 
   function toggleElementsVisibility() {
+    if (!elementsHidden) window.scrollTo(0, document.body.scrollHeight);
     $hideableElements.toggleClass('invisible');
-    $ctrPanel.toggleClass('lower');
+    $contactSection.toggleClass('no-touch');
     elementsHidden = !elementsHidden;
   }
 
@@ -23,7 +24,7 @@ $(() => {
   const $bkgdButtons = $('#bkgd-buttons');
 
   function hideControls() {
-    $viewCtrPanelButton.removeClass('active').text('Show Controls');
+    $viewCtrPanelButton.removeClass('active').html('&xutri;');
     $bkgdButtons.removeClass('show');
   }
 
@@ -38,14 +39,14 @@ $(() => {
     const $this = $(this);
     $this.toggleClass('active');
     if ($this.is('.active')) {
-      $this.text('Minimize Controls');
+      $this.html('&xdtri;');
       if (!elementsHidden) {
         toggleElementsVisibility();
-        $(document).on('scroll', showElements);
+        setTimeout(() => $(document).on('scroll', showElements), 1500);
       }
 
     } else {
-      $this.text('Show Controls');
+      $this.html('&xutri;');
     }
 
     $bkgdButtons.toggleClass('show');
@@ -132,34 +133,37 @@ $(() => {
   });
 
   // Code for image previews
-  const $modal = $('.modal');
+  const $modal = $('.gallery .modal');
   const $previews = $modal.find('.img-preview');
   let currentPanelIdx;
 
   // Open full image preview
   $('.thumbs').on('click', '.thumb-panel', function () {
     currentPanelIdx = Number(this.dataset.idx);
-    $previews[currentPanelIdx].style.display = 'flex';
-    $modal.css({ display: 'block' });
+    $previews.eq(currentPanelIdx).addClass('display');
+    $modal.addClass('display');
   })
 
   // Close image preview
-  $modal.find('.close-modal').on('click', function () {
-    $previews.css({ display: '' });
-    $modal.css({ display: '' })
-    currentPanelIdx = undefined;
+  $modal.on('click', function (e) {
+    e.stopPropagation();
+    if ($(e.target).is('.close-modal')) {
+      $previews.removeClass('display');
+      $modal.removeClass('display');
+      currentPanelIdx = undefined;
+    }
   })
 
   // View next/previous image
-  $modal.find('.nav-preview').on('click', function () {
+  $modal.find('.img-control').on('click', function () {
     const deltaIdx = Number(this.dataset.deltaIdx);
     let newIdx = (currentPanelIdx + deltaIdx) % $previews.length;
     if (newIdx < 0) {
       newIdx = $previews.length - 1;
     }
 
-    $previews[currentPanelIdx].style.display = '';
-    $previews[newIdx].style.display = 'flex';
+    $previews.eq(currentPanelIdx).removeClass('display');
+    $previews.eq(newIdx).addClass('display');
     currentPanelIdx = newIdx;
   });
 

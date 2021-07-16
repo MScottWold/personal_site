@@ -159,6 +159,10 @@ export const artboard = {
       strokeColor: '#1F2833',
       fillColor: '#2C5F5D',
       lineWidth: 2,
+    },
+    scaleDown: {
+      maxWidth: 380,
+      factor: 2
     }
   }
 };

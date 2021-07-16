@@ -33,10 +33,10 @@ section {
 
 .section-title {
   position: relative;
-  padding: 15px;
+  padding: 10px;
   color: $dark-green;
   font-family: 'Bebas Neue';
-  font-size: 4em;
+  font-size: 2.5em;
   
   &::before {
     content: "\22A3\ ";
@@ -52,8 +52,8 @@ section {
 }
 
 section > p:first-of-type {
-  padding: 15px 15px 35px 15px;
-  font-size: 1.5em;
+  padding: 0 10px 10px 10px;
+  font-size: 1.2em;
   color: $light-gray;
 }
 
@@ -78,6 +78,7 @@ section > p:first-of-type {
 }
 
 img {
+  display: block;
   width: 100%;
   height: auto;
 }
@@ -93,7 +94,6 @@ img {
   flex-wrap: wrap;
   margin-top: 10px;
   height: 60px;
-  width: 60%;
 
   li {
     flex: 1 0 33%;

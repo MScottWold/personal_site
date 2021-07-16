@@ -1,20 +1,23 @@
 #bio {
   position: relative;
   display: flex;
+  flex-direction: column-reverse;
   align-items: center;
-  margin-right: 20%;
+  margin-top: -100px;
+  padding-bottom: 100px;
   border-radius: 3px;
   font-size: 1.2em;
   
   .text-wrapper {
     background-color: rgba($med-blue, 0.25);
-    padding: 10% 220px 10% 10%;
+    padding: 150px 10% 10% 10%;
   }
 
   .img-wrapper {
     position: relative;
-    left: -200px;
-    flex: 1 0 250px;
+    bottom: -125px;
+    width: 60%;
+    max-width: 300px;
     overflow: hidden;
   }
 
