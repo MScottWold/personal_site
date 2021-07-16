@@ -6,9 +6,21 @@ class Mouse {
     this.ignore = false;
   }
 
+  resetPos() {
+    this.x = null;
+    this.y = null;
+    this.clicked = false;
+  }
+
   updatePos(x, y) {
     this.x = x;
     this.y = y;
+  }
+
+  click(x, y) {
+    this.x = x;
+    this.y = y;
+    this.clicked = true;
   }
 
   setToIgnore(time = 1000) {

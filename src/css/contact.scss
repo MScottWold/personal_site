@@ -1,6 +1,10 @@
 #contact {
   position: relative;
   min-height: calc(100vh - 60px);
+
+  &.no-touch {
+    touch-action: none;
+  }
 }
 
 #contact-me {
@@ -24,12 +28,12 @@
 
   a {
     display: block;
-    margin: 20px;
-    height: 60px;
+    margin: 10px;
+    height: 40px;
   }
 
   [class$="icon"] {
-    width: 60px;
-    height: 60px;
+    width: 40px;
+    height: 40px;
   }
 }

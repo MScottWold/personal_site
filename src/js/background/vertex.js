@@ -6,7 +6,7 @@ class Vertex {
 
   draw(ctx) {
     ctx.beginPath();
-    ctx.arc(this.point.x, this.point.y, 4, 0, Math.PI * 2, false);
+    ctx.arc(this.point.x, this.point.y, this.options.radius, 0, Math.PI * 2, false);
     ctx.closePath();
     
     if (this.point.wander) {
