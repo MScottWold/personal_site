@@ -192,6 +192,7 @@ class AnimatedBackground {
     const oldH = this.canvas.el.height;
     this.canvas.el.height = newH;
     this.canvas.el.width = newW;
+    if (window.innerWidth < 768) return;
     
     // when an artboard is modified, the scaling will change
     if (this.modified) {
@@ -202,11 +203,9 @@ class AnimatedBackground {
   }
 
   _installListeners() {
-    if (window.innerWidth > 768) {
-      window.addEventListener('resize', function () {
-        this._resizeCanvas(window.innerWidth, window.innerHeight);
-      }.bind(this));
-    }
+    window.addEventListener('resize', function () {
+      this._resizeCanvas(window.innerWidth, window.innerHeight);
+    }.bind(this));
 
     document.addEventListener('pointerdown', function (e) {
       // prevent chosen elements from reacting to click event
