@@ -1,5 +1,5 @@
-import CreateAnimatedBackground from './background/create_animated_background';
+import CreateConstellation from './background/create_constellation';
 
 $(() => {
-  new CreateAnimatedBackground('my-canvas');
+  new CreateConstellation('my-canvas');
 })

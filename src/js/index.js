@@ -1,110 +1,140 @@
 import Rotatable from './rotatable';
 import { artboard } from './background/artboard';
-import AnimatedBackground from './background/animated_background';
+import Constellation from './background/constellation';
 
 $(() => {
   /**
-   * Animated Background
-   * */ 
-  const background = new AnimatedBackground('background-canvas', artboard);
+   * Constellation background
+   * */
+  const constellationManager = {
+    constellation: new Constellation('background-canvas', artboard),
 
-  // Logic for Displaying Animated Background controls
-  const $hideableElements = $('.hideable');
-  const $contactSection = $('#contact');
-  let elementsHidden = false;
+    $hideableElements: $('.hideable'),
 
-  function toggleElementsVisibility() {
-    if (!elementsHidden) window.scrollTo(0, document.body.scrollHeight);
-    $hideableElements.toggleClass('invisible');
-    $contactSection.toggleClass('no-touch');
-    elementsHidden = !elementsHidden;
-  }
+    $contactSection: $('#contact'),
+    
+    $viewCtrPanelButton: $('#view-ctr-panel'),
+    
+    $bkgdButtons: $('#bkgd-buttons'),
+    
+    $modeButtons: $('#bkgd-modes button'),
+    
+    hideLinesOption: document.getElementById('hide-lines'),
 
-  const $viewCtrPanelButton = $('#view-ctr-panel');
-  const $bkgdButtons = $('#bkgd-buttons');
+    elementsHidden: false,
 
-  function hideControls() {
-    $viewCtrPanelButton.removeClass('active').html('&xutri;');
-    $bkgdButtons.removeClass('show');
-  }
+    _toggleElementsVisibility: function () {
+      if (!this.elementsHidden) window.scrollTo(0, document.body.scrollHeight);
+      this.$hideableElements.toggleClass('invisible');
+      this.$contactSection.toggleClass('no-touch');
+      this.elementsHidden = !this.elementsHidden;
+    },
 
-  function showElements() {
-    toggleElementsVisibility();
-    hideControls();
+    _hideControls: function () {
+      this.$viewCtrPanelButton.removeClass('active').html('&xutri;');
+      this.$bkgdButtons.removeClass('show');
+    },
 
-    $(document).off('scroll', showElements);
-  }
+    _showElements: function () {
+      this._toggleElementsVisibility();
+      this._hideControls();
+  
+      $(document).off('scroll.showElem');
+    },
 
-  $viewCtrPanelButton.on('click', function () {
-    const $this = $(this);
-    $this.toggleClass('active');
-    if ($this.is('.active')) {
-      $this.html('&xdtri;');
-      if (!elementsHidden) {
-        toggleElementsVisibility();
-        setTimeout(() => $(document).on('scroll', showElements), 1500);
+    _toggleCtrPanel: function (e) {
+      const $button = $(e.currentTarget);
+      $button.toggleClass('active');
+      if ($button.is('.active')) {
+        $button.html('&xdtri;');
+        if (!this.elementsHidden) {
+          this._toggleElementsVisibility();
+          setTimeout(() => {
+            $(document).on(
+              'scroll.showElem', 
+              this._showElements.bind(this)
+            )
+          }, 1000);
+        }
+
+      } else {
+        $button.html('&xutri;');
       }
 
-    } else {
-      $this.html('&xutri;');
-    }
+      this.$bkgdButtons.toggleClass('show');
+    },
 
-    $bkgdButtons.toggleClass('show');
-  });
+    _changeMode: function (e) {
+      // Changing Constellation mode
+      const $button = $(e.currentTarget);
+      this.constellation.changeMouseMode($button.data('bkgdMode'));
+      this.$modeButtons.removeClass('active');
+      $button.addClass('active');
 
-  // Changing Animated Background mode
-  const hideLinesOption = document.getElementById('hide-lines');
-  const $modeButtons = $('#bkgd-modes button');
+      // reset the constellation to its original form
+      if ($button.data('bkgdMode') === 'default') {
+        this.constellation.resetArtboard(artboard);
+        this.hideLinesOption.checked = false;
+        this._showElements();
+      }
 
-  $('#bkgd-modes').on('click', 'button', function (e) {
-    const $this = $(this);
-    background.changeMouseMode($this.data('bkgdMode'));
-    $modeButtons.removeClass('active');
-    $this.addClass('active');
+      this._hideControls();
+    },
 
-    // reset the background to its original form
-    if ($this.data('bkgdMode') === 'default') {
-      background.resetArtboard(artboard);
-      hideLinesOption.checked = false;
-      showElements();
-    }
+    init: function () {
+      this.$viewCtrPanelButton.on('click', this._toggleCtrPanel.bind(this));
+      $('#bkgd-modes').on('click', 'button', this._changeMode.bind(this));
+      this.hideLinesOption.addEventListener('click', () => {
+        this.constellation.toggleLines()
+      });
+    },
+  };
 
-    hideControls();
-  })
+  constellationManager.init();
 
-  hideLinesOption.addEventListener('click', () => background.toggleLines());
 
   /**
    * Rotating element
-   * */ 
-  const rotatable = new Rotatable($('.rotatable > *'));
-  rotatable.startAnimation();
-  let rotating = true;
+   * */
+  const rotatableManager = {
+    rotatable: new Rotatable($('.rotatable > *')),
 
-  // Only rotate the element when visible
-  const intro = document.getElementById('intro');
-  window.addEventListener('scroll', function () {
-    const pos = intro.getBoundingClientRect();
-    if (
-      pos.top < window.innerHeight 
-      && pos.bottom >= 0
-      && !rotating
-    ) {
-      rotatable.startAnimation();
-      rotating = true;
-    } else if (
-      pos.top < 0
-      && pos.bottom < 0
-      && rotating
-    ) {
-      rotatable.stopAnimation();
-      rotating = false;
+    rotating: true,
+
+    intro: document.getElementById('intro'),
+
+    _rotateWhenVisible: function () {
+      // Only rotate the element when visible
+      const pos = this.intro.getBoundingClientRect();
+      if (
+        pos.top < window.innerHeight
+        && pos.bottom >= 0
+        && !this.rotating
+      ) {
+        this.rotatable.startAnimation();
+        this.rotating = true;
+      } else if (
+        pos.top < 0
+        && pos.bottom < 0
+        && this.rotating
+      ) {
+        this.rotatable.stopAnimation();
+        this.rotating = false;
+      }
+    },
+
+    init: function () {
+      window.addEventListener('scroll', this._rotateWhenVisible.bind(this));
+      this.rotatable.startAnimation();
     }
-  });
-  
+  };
+
+  rotatableManager.init();
+
+
   /**
    * Navigation menu button
-   */ 
+   */
   $('#nav-menu').on('click', function (e) {
     if (!e.target.classList.contains('inert')) {
       $(this).toggleClass('expanded')
@@ -113,78 +143,99 @@ $(() => {
 
   /**
    * Projects panel
-   */ 
-  const $tabList = $('.tab-list');
-  let $activeLink = $tabList.find('a.active');
-  let $panel = $($activeLink.attr('href'));
+   */
+  const projectsManager = {
+    $tabList: $('.tab-list'),
 
-  $tabList.on('click', '.panel-title', function (e) {
-    e.preventDefault();
-    const $link = $(this);
-    const id = this.hash;
+    _changeTab: function (e) {
+      e.preventDefault();
+      const $link = $(e.currentTarget);
+      const id = e.currentTarget.hash;
 
-    if (id && !$link.is('.active')) {
-      $panel.removeClass('active');
-      $activeLink.removeClass('active');
+      if (id && !$link.is('.active')) {
+        this.$panel.removeClass('active');
+        this.$activeLink.removeClass('active');
 
-      $panel = $(id).addClass('active');
-      $activeLink = $link.addClass('active');
+        this.$panel = $(id).addClass('active');
+        this.$activeLink = $link.addClass('active');
+      }
+    },
+
+    init() {
+      this.$activeLink = this.$tabList.find('a.active');
+      this.$panel = $(this.$activeLink.attr('href'));
+      this.$tabList.on('click', '.panel-title', this._changeTab.bind(this));
     }
-  });
+  };
+
+  projectsManager.init();
+
 
   // Code for image previews
-  const $modal = $('.gallery .modal');
-  const $previews = $modal.find('.img-preview');
-  let currentPanelIdx;
+  const imgModalManager = {
+    $modal: $('.gallery .modal'),
 
-  // Open full image preview
-  $('.thumbs').on('click', '.thumb-panel', function () {
-    currentPanelIdx = Number(this.dataset.idx);
-    $previews.eq(currentPanelIdx).addClass('display');
-    $modal.addClass('display');
-  })
+    _openImg: function (e) {
+      this.currentPanelIdx = Number(e.currentTarget.dataset.idx);
+      this.$previews.eq(this.currentPanelIdx).addClass('display');
+      this.$modal.addClass('display');
+    },
 
-  // Close image preview
-  $modal.on('click', function (e) {
-    e.stopPropagation();
-    if ($(e.target).is('.close-modal')) {
-      $previews.removeClass('display');
-      $modal.removeClass('display');
-      currentPanelIdx = undefined;
-    }
-  })
+    _closeImg: function (e) {
+      e.stopPropagation();
+      if ($(e.target).is('.close-modal')) {
+        this.$previews.removeClass('display');
+        this.$modal.removeClass('display');
+        this.currentPanelIdx = undefined;
+      }
+    },
 
-  // View next/previous image
-  $modal.find('.img-control').on('click', function () {
-    const deltaIdx = Number(this.dataset.deltaIdx);
-    let newIdx = (currentPanelIdx + deltaIdx) % $previews.length;
-    if (newIdx < 0) {
-      newIdx = $previews.length - 1;
-    }
+    _navImgs: function (e) {
+      const deltaIdx = Number(e.currentTarget.dataset.deltaIdx);
+      let newIdx = (this.currentPanelIdx + deltaIdx) % this.$previews.length;
+      if (newIdx < 0) {
+        newIdx = this.$previews.length - 1;
+      }
 
-    $previews.eq(currentPanelIdx).removeClass('display');
-    $previews.eq(newIdx).addClass('display');
-    currentPanelIdx = newIdx;
-  });
+      this.$previews.eq(this.currentPanelIdx).removeClass('display');
+      this.$previews.eq(newIdx).addClass('display');
+      this.currentPanelIdx = newIdx;
+    },
+
+    init: function () {
+      this.$previews = this.$modal.find('.img-preview');
+      $('.thumbs').on('click', '.thumb-panel', this._openImg.bind(this));
+      this.$modal.on('click', this._closeImg.bind(this));
+      this.$modal.find('.img-control').on('click', this._navImgs.bind(this));
+    },
+  };
+
+  imgModalManager.init();
 
   /**
    * Selected elements pop in when scrolled to
-   * */ 
-  let $appearReady = $('.appear-ready');
-  
-  function elementPopIn() {
-    $appearReady.each(function () {
-      const pos = this.getBoundingClientRect();
-      if (pos.top < (window.innerHeight * .65) || pos.bottom < 0) {
-        $(this).removeClass('appear-ready');
-        $appearReady = $('.appear-ready')
+   * */
+  const popInManager = {
+    $appearReady: $('.appear-ready'),
+
+    _elementPopIn: function () {
+      this.$appearReady.each((i, ele) => {
+        const pos = ele.getBoundingClientRect();
+        if (pos.top < (window.innerHeight * .65) || pos.bottom < 0) {
+          $(ele).removeClass('appear-ready');
+          this.$appearReady = $('.appear-ready')
+        }
+      });
+
+      if (this.$appearReady.length === 0) {
+        $(window).off('scroll.popInManager');
       }
-    });
+    },
 
-    if ($appearReady.length === 0) {
-      $(window).off('scroll', elementPopIn);
+    init: function () {
+      $(window).on('scroll.popInManager', this._elementPopIn.bind(this));
     }
-  }
-
-  $(window).on('scroll', elementPopIn);
+  };
+  
+  popInManager.init();
 });

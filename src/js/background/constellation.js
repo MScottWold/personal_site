@@ -4,16 +4,14 @@ import Shape from './shape';
 import Mouse from './mouse';
 import { defaultArtboard } from './artboard';
 
-class AnimatedBackground {
+class Constellation {
   constructor(tagId, artboard = defaultArtboard) {
     this.canvas = {};
     this.mouse = new Mouse;
-    this.options = artboard.options;
     this.modified = false;
 
     this._initCanvas(tagId);
     this._initShapes(artboard);
-    this._scaleDown();
     this._installListeners();
     window.requestAnimationFrame(this._drawArt.bind(this));
   }
@@ -28,7 +26,7 @@ class AnimatedBackground {
   }
 
   resetArtboard(artboard) {
-    this._initShapes(artboard)
+    this._initShapes(artboard);
     this.modified = false;
     this.noLines = false;
   }
@@ -46,7 +44,7 @@ class AnimatedBackground {
     
     // remove point from polygons
     this.polygons.forEach((plygn) => plygn.removePoint(point));
-    this.polygons = this.polygons.filter((plygn) => plygn.points.length > 1);
+    this.polygons = this.polygons.filter((plygn) => plygn.points.length > 2);
   }
 
   _addNewPoint(x, y) {
@@ -54,17 +52,11 @@ class AnimatedBackground {
     const nextId = this.points.length >= 1 
       ? this.points[this.points.length - 1].id + 1
       : 0;
-    const newPt = new Point( 
-      x, 
-      y, 
-      nextId,
-      this.canvas, 
-      this.mouse 
-    );
+    const newPt = new Point( x, y, nextId,this.canvas, this.mouse);
 
     if (this.noLines) {
       this.points.push(newPt);
-      this.vertices.push(new Vertex(newPt, this.options.vertices));
+      this.vertices.push(new Vertex(newPt));
       return;
     }
 
@@ -74,12 +66,10 @@ class AnimatedBackground {
      * */ 
     const shapePoints = newPt.twoClosestPoints(this.points);
     this.points.push(newPt);
-    this.vertices.push(new Vertex(newPt, this.options.vertices));
-    shapePoints.forEach((pt) => this.lines.push(new Shape(
-      [pt, newPt],
-      this.points,
-      this.options.shapes
-    )));
+    this.vertices.push(new Vertex(newPt));
+    shapePoints.forEach((pt) => {
+      this.lines.push(new Shape([pt, newPt], this.points));
+    });
   }
 
   _teleportPoints() {
@@ -94,7 +84,10 @@ class AnimatedBackground {
     this.canvas.ctx = this.canvas.el.getContext('2d');
   }
 
-  _initShapes({ points, lines, polygons }) {
+  _initShapes({ points, lines, polygons, options }) {
+    // Set new class options
+    if (options) this._setShapeOptions(options);
+
     this.vertices = [];
     this.points = [];
     for (const id in points) {
@@ -109,34 +102,25 @@ class AnimatedBackground {
       this.points.push(ptObj);
 
       // vertex will handle visual aspect of a point
-      this.vertices.push(new Vertex(ptObj, this.options.vertices));
+      this.vertices.push(new Vertex(ptObj));
     }
 
-    this.lines = lines.map((pointIds) => {
-      return new Shape(
-        pointIds, 
-        this.points, 
-        this.options.shapes
-      )
-    });
+    this.lines = lines.map((pointIds) => new Shape(pointIds, this.points));
 
-    this.polygons = polygons.map((pointIds) => {
-      return new Shape(
-        pointIds, 
-        this.points, 
-        this.options.shapes, 
-        true
-      );
-    });
+    this.polygons = polygons.map((pointIds) => (
+      new Shape(pointIds, this.points, true)
+    ));
   }
 
-  _scaleDown() {
-    const { scaleDown } = this.options;
+  _setShapeOptions(options) {
+    const { scaleDown, vertices, shapes } = options;
+    Vertex.options = { ...options.vertices };
+    Shape.options = { ...options.shapes };
     if (scaleDown && window.innerWidth < scaleDown.maxWidth) {
       const factor = scaleDown.factor;
-      this.options.vertices.lineWidth /= factor;
-      this.options.vertices.radius /= factor;
-      this.options.shapes.lineWidth /= factor;
+      Vertex.options.lineWidth = vertices.lineWidth / factor;
+      Vertex.options.radius = vertices.radius / factor;
+      Shape.options.lineWidth = shapes.lineWidth / factor;
     }
   }
 
@@ -148,15 +132,15 @@ class AnimatedBackground {
     // Order of shapes drawn is important for visual appeal
 
     // Draw all shapes
-    ctx.lineWidth = this.options.shapes.lineWidth;
-    ctx.strokeStyle = this.options.shapes.strokeColor;
-    ctx.fillStyle = this.options.shapes.fillColor;
+    ctx.lineWidth = Shape.options.lineWidth;
+    ctx.strokeStyle = Shape.options.strokeColor;
+    ctx.fillStyle = Shape.options.fillColor;
     this.polygons.forEach((shape) => shape.draw(ctx));
     this.lines.forEach((shape) => shape.draw(ctx));
 
     // Draw all vertices
-    ctx.lineWidth = this.options.vertices.lineWidth;
-    ctx.strokeStyle = this.options.vertices.strokeColor;
+    ctx.lineWidth = Vertex.options.lineWidth;
+    ctx.strokeStyle = Vertex.options.strokeColor;
     this.vertices.forEach((vtx) => vtx.draw(ctx));
 
     // Calc elapsed time for smooth animation
@@ -164,9 +148,6 @@ class AnimatedBackground {
     const elapsed = Math.floor(timestamp - this.animStart);
     this.animStart = timestamp;
 
-    /**
-     * Move the logic below to the point object
-     */
     // Points' movement will depend on the mouse position and mode
     if (this.mouse.mode === 'coalesce' && this.mouse.clicked === true) {
       this.points.forEach(pt => pt.moveToMouse(elapsed));
@@ -245,4 +226,4 @@ class AnimatedBackground {
   }
 }
 
-export default AnimatedBackground;
+export default Constellation;

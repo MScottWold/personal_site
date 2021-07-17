@@ -55,6 +55,14 @@
   label:hover {
     background-color: rgba($dark-green, 0.5);
   }
+
+
+  p, label {
+    -webkit-touch-callout: none;
+      -webkit-user-select: none;
+          -ms-user-select: none;
+              user-select: none;
+  }
   
   p {
     margin: 0 5px;

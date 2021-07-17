@@ -1,8 +1,8 @@
-import AnimatedBackground from "./animated_background";
+import Constellation from './constellation';
 import Point from './point';
-import Vertex from "./vertex";
+import Vertex from './vertex';
 
-class CreateAnimatedBackground extends AnimatedBackground {
+class CreateConstellation extends Constellation {
   _drawArt() {
     const { ctx } = this.canvas;
     ctx.clearRect(0, 0, this.canvas.el.width, this.canvas.el.height);
@@ -23,7 +23,7 @@ class CreateAnimatedBackground extends AnimatedBackground {
       this.mouse
     );
     this.points.push(newPt);
-    this.vertices.push(new Vertex(newPt, this.options.vertices));
+    this.vertices.push(new Vertex(newPt));
   }
 
   _showPoints() {
@@ -78,4 +78,4 @@ class CreateAnimatedBackground extends AnimatedBackground {
   }
 }
 
-export default CreateAnimatedBackground;
+export default CreateConstellation;

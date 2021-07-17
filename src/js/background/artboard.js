@@ -171,17 +171,4 @@ export const defaultArtboard = {
   points: {},
   lines: [],
   polygons: [],
-  options: {
-    vertices: {
-      strokeColor: 'black',
-      fillColor: 'white',
-      lineWidth: 2,
-      radius: 4
-    },
-    shapes: {
-      strokeColor: 'black',
-      fillColor: 'white',
-      lineWidth: 2,
-    }
-  }
 };

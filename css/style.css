@@ -691,6 +691,12 @@ div[class^=bar] {
 #bkgd-buttons label:hover {
   background-color: rgba(44, 95, 93, 0.5);
 }
+#bkgd-buttons p, #bkgd-buttons label {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
 #bkgd-buttons p {
   margin: 0 5px;
   font-size: 0.85em;
@@ -733,6 +739,11 @@ footer [class$=icon] {
   margin: 0 5px;
 }
 
+@media screen and (max-width: 375px) {
+  #nav-menu {
+    font-size: 4.2vw;
+  }
+}
 @media screen and (max-width: 768px) {
   body * {
     -webkit-touch-callout: none;

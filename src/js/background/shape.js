@@ -1,13 +1,12 @@
 import Point from './point';
 
 class Shape {
-  constructor(pointIds, points, options, polygon = false) {
+  constructor(pointIds, points, polygon = false) {
     if (pointIds[0] instanceof Point) {
       this.points = pointIds;
     } else {
       this.points = pointIds.map(id => points[id]);
     }
-    this.options = options;
     this.polygon = polygon;
   }
 
@@ -31,5 +30,12 @@ class Shape {
     this.points = this.points.filter((pt) => pt !== point);
   }
 }
+
+// Set default options
+Shape.options = {
+  strokeColor: 'black',
+  fillColor: 'white',
+  lineWidth: 2,
+};
 
 export default Shape;

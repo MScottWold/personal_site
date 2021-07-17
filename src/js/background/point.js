@@ -13,45 +13,15 @@ class Point {
   }
 
   update(elapsed) {
-    const distanceFactor = Point.speed * Math.min(elapsed, 33);
     const distToMouse = this._distanceTo(this.mouse.x, this.mouse.y);
-    
-    // Only calc distToCenter if necessary
-    let distToCenter;
-    let dx, dy;
 
     if (this.mouse.x && distToMouse < 100 && !this.mouse.ignore) {
       this.moveToMouse(elapsed, distToMouse);
-      return;
-
     } else if (this.wander) {
-      distToCenter = this._distanceTo(this.cx, this.cy);
-      /** 
-        * Randomly turn point by a defined radian value. If the point gets far
-        * enough away from the center, it will turn in one direction.
-        */
-      let turn = (distToCenter < Point.range && Math.random() > 0.5)
-        ? Point.turnRadius
-        : -(Point.turnRadius);
-      this.rad = this.rad + turn;
-      dx = Math.cos(this.rad);
-      dy = Math.sin(this.rad);
+      this._wander(elapsed);
     } else {
-      distToCenter = this._distanceTo(this.cx, this.cy);
-      
-      // Don't reset the point until it gets close to center
-      if (distToCenter < Point.range * 0.25) {
-        this.wander = true;
-        this.rad = Math.PI * 2 / 45 * (Math.floor(Math.random() * 45) + 1)
-      }
-
-      let adjFactor = 18 / distToCenter;
-      dx = -(adjFactor * (this.x - this.cx));
-      dy = -(adjFactor * (this.y - this.cy));
+      this._returnToCenter(elapsed);
     }
-
-    this.x = this.x + dx * distanceFactor;
-    this.y = this.y + dy * distanceFactor;
   }
 
   moveToMouse(elapsed, distanceToMouse) {
@@ -153,6 +123,40 @@ class Point {
     }
 
     return [closestPt, secondClosestPt];
+  }
+
+  _wander(elapsed) {
+    const distToCenter = this._distanceTo(this.cx, this.cy);
+
+    /** 
+      * Randomly turn point by a defined radian value. If the point gets far
+      * enough away from the center, it will turn in one direction.
+      */
+    let turn = (distToCenter < Point.range && Math.random() > 0.5)
+      ? Point.turnRadius
+      : -(Point.turnRadius);
+    this.rad = this.rad + turn;
+    const dx = Math.cos(this.rad);
+    const dy = Math.sin(this.rad);
+    const distanceFactor = Point.speed * Math.min(elapsed, 33);
+    this.x = this.x + dx * distanceFactor;
+    this.y = this.y + dy * distanceFactor;
+  }
+
+  _returnToCenter(elapsed) {
+    const distToCenter = this._distanceTo(this.cx, this.cy);
+    const adjFactor = 18 / distToCenter;
+    const distanceFactor = Point.speed * Math.min(elapsed, 33);
+    const dx = -(adjFactor * (this.x - this.cx));
+    const dy = -(adjFactor * (this.y - this.cy));
+    this.x = this.x + dx * distanceFactor;
+    this.y = this.y + dy * distanceFactor;
+
+    // Don't reset the point until it gets close to center
+    if (distToCenter < Point.range * 0.25) {
+      this.wander = true;
+      this.rad = Math.PI * 2 / 45 * (Math.floor(Math.random() * 45) + 1);
+    }
   }
 
   _distanceTo(x, y) {

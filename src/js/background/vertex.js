@@ -1,18 +1,17 @@
 class Vertex {
-  constructor(point, options) {
+  constructor(point) {
     this.point = point;
-    this.options = options;
   }
 
   draw(ctx) {
     ctx.beginPath();
-    ctx.arc(this.point.x, this.point.y, this.options.radius, 0, Math.PI * 2, false);
+    ctx.arc(this.point.x, this.point.y, Vertex.options.radius, 0, Math.PI * 2, false);
     ctx.closePath();
     
     if (this.point.wander) {
-      ctx.fillStyle = this.options.fillColor;
+      ctx.fillStyle = Vertex.options.fillColor;
     } else {
-      ctx.fillStyle = this.options.altFillColor;
+      ctx.fillStyle = Vertex.options.altFillColor;
     }
 
     ctx.fill();
@@ -26,5 +25,13 @@ class Vertex {
     ctx.fillText(this.point.id, this.point.x - 3, this.point.y + 13);
   }
 }
+
+// Set default options
+Vertex.options = {
+  fillColor: 'white',
+  altFillColor: 'black',
+  strokeColor: 'black',
+  radius: 4,
+};
 
 export default Vertex;
