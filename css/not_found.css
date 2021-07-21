@@ -1,0 +1,174 @@
+@charset "UTF-8";
+/* Reset */
+html, body, header, section, nav,
+h1, h2, h3, a, p, figure, figcaption, img,
+ul, li, div, button {
+  margin: 0;
+  border: 0;
+  padding: 0;
+  outline: 0;
+  box-sizing: inherit;
+  font: inherit;
+  text-decoration: inherit;
+  text-align: inherit;
+  color: inherit;
+  background: transparent;
+}
+
+ul {
+  list-style: none;
+}
+
+/* style */
+html {
+  scroll-behavior: smooth;
+  height: 100%;
+}
+
+body {
+  position: relative;
+  height: 100%;
+  font-family: "Lato", sans-serif;
+  background-color: #0B0C10;
+  color: #A8A7A7;
+}
+
+*:focus-visible {
+  outline: 1px dashed #B41A4E;
+  outline-offset: 2px;
+}
+
+#background-img {
+  position: fixed;
+  display: block;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: -10;
+}
+
+section {
+  min-height: 120vh;
+}
+
+.section-title {
+  position: relative;
+  padding: 10px;
+  color: #2C5F5D;
+  font-family: "Bebas Neue";
+  font-size: 2.5em;
+}
+.section-title::before {
+  content: "⊣ ";
+  color: #A8A7A7;
+}
+.section-title::after {
+  content: " ⊢";
+  color: #A8A7A7;
+}
+
+section > p:first-of-type {
+  padding: 0 10px 10px 10px;
+  font-size: 1.2em;
+  color: #A8A7A7;
+}
+
+.hidden {
+  display: none;
+}
+
+.invisible {
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s linear, visibility 0.3s 0.3s linear;
+}
+
+.text-wrapper p {
+  margin-bottom: 1em;
+}
+.text-wrapper p:last-of-type {
+  margin-bottom: 0;
+}
+
+img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.text-link {
+  text-decoration: underline;
+  color: #B41A4E;
+}
+
+.tech-stack {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  margin-top: 10px;
+  height: 60px;
+}
+.tech-stack li {
+  flex: 1 0 33%;
+  position: relative;
+  padding-left: 15px;
+}
+.tech-stack li::before {
+  content: "»";
+  position: absolute;
+  left: 0;
+  line-height: 1em;
+  color: #B41A4E;
+}
+
+[class$=icon] {
+  width: 24px;
+  height: 24px;
+  fill: #A8A7A7;
+}
+
+.twitter-icon:hover {
+  fill: #1DA1F2;
+}
+
+.linkedin-icon:hover {
+  fill: #0E76A8;
+}
+
+.github-icon:hover {
+  fill: #fff;
+}
+
+.email-icon:hover,
+.external-link-icon:hover {
+  fill: #B41A4E;
+}
+
+.appear {
+  transition: opacity 0.5s linear, transform 0.5s linear;
+}
+.appear.appear-ready {
+  transform: translateY(60px);
+  opacity: 0;
+}
+
+body {
+  background-color: #0B0C10;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+#my-canvas {
+  position: fixed;
+  display: block;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: -10;
+}
+
+/*# sourceMappingURL=not_found.css.map */
