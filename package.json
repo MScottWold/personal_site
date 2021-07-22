@@ -9,9 +9,9 @@
     "build": "webpack",
     "webpack-prod": "webpack --mode=production --watch",
     "webpack-dev": "webpack --mode=development --watch",
-    "sass": "node_modules/.bin/sass --watch src/css/style.scss:css/style.css",
-    "sass-draw": "node_modules/.bin/sass --watch src/css/draw.scss:css/draw.css",
-    "sass-not-found": "node_modules/.bin/sass --watch src/css/not_found.scss:css/not_found.css"
+    "sass": "node_modules/.bin/sass --watch src/css/style.scss:docs/css/style.css",
+    "sass-draw": "node_modules/.bin/sass --watch src/css/draw.scss:docs/css/draw.css",
+    "sass-not-found": "node_modules/.bin/sass --watch src/css/not_found.scss:docs/css/not_found.css"
   },
   "keywords": [],
   "author": "",
