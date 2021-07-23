@@ -105,7 +105,13 @@ class Constellation {
       this.vertices.push(new Vertex(ptObj));
     }
 
-    this.lines = lines.map((pointIds) => new Shape(pointIds, this.points));
+    // Performance increases when lines are limited to two points
+    this.lines = [];
+    lines.forEach((line) => {
+      for (let i = 0; i < line.length - 1; i++) {
+        this.lines.push(new Shape([line[i], line[i + 1]], this.points));
+      }
+    });
 
     this.polygons = polygons.map((pointIds) => (
       new Shape(pointIds, this.points, true)
