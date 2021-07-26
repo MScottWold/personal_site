@@ -9,5 +9,5 @@ bottom to play with the animated background.
 # Technologies Used
 * HTML
 * CSS/SCSS
-* Javascript ES6
+* JavaScript ES6
 * jQuery
