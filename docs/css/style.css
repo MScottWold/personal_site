@@ -751,6 +751,11 @@ footer [class$=icon] {
     -ms-user-select: none;
     user-select: none;
   }
+
+  .tech-stack {
+    height: 120px;
+    flex-direction: row;
+  }
 }
 @media screen and (min-width: 768px) {
   .section-title {

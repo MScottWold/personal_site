@@ -10,8 +10,15 @@
     -webkit-touch-callout: none;
       -webkit-user-select: none;
           -ms-user-select: none;
-              user-select: none; 
+              user-select: none;
   }
+
+  // about.scss
+  .tech-stack {
+    height: 120px;
+    flex-direction: row;
+  }
+
 }
 
 @media screen and (min-width: 768px) {
@@ -32,7 +39,7 @@
     font-size: 1.2em;
     margin-top: 0;
     padding-bottom: 0;
-    
+
     .text-wrapper {
       padding: 5% 90px 5% 5%;
     }
@@ -115,7 +122,7 @@
     @include underline($light-gray, $dark-green);
     padding: 5px 5px 6px 5px;
     margin-left: 5px;
-    margin-right: 5px;    
+    margin-right: 5px;
   }
 
   #menu-btn {
@@ -191,7 +198,7 @@
   // about.scss
   #bio {
     margin-right: 20%;
-    
+
     .text-wrapper {
       padding: 10% 220px 10% 10%;
     }
