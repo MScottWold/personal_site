@@ -1,12 +1,16 @@
 #timeline {
+  position: relative;
   padding: 20px 0 120px 0;
+}
+
+.exp-card {
+  background-color: rgba($med-blue, 0.25);
+  padding: 20px;
+  margin: 40px 80px;
 }
 
 .exp-desc {
   position: relative;
-  margin: 15px 0 15px 10vw;
-  padding: 15px;
-  background-color: rgba($med-blue, 0.25);
   text-align: justify;
 
   h3 {
@@ -23,8 +27,8 @@
   &::before {
     content: "";
     position: absolute;
-    left: calc(-5vw - 10px);
     top: 50%;
+    left: 30px;
     transform: translateY(-50%);
     border-radius: 50%;
     border: 2px solid $deep-pink;
@@ -39,9 +43,9 @@
   &::after {
     content: "";
     position: absolute;
-    top: -10px;
-    bottom: -10px;
-    left: calc(-5vw - 1px);
+    top: -20px;
+    bottom: -20px;
+    left: 40px;
     width: 2px;
     background-color: $dark-green;
   }

@@ -1,7 +1,7 @@
 @charset "UTF-8";
 /* Reset */
 html, body, header, section, nav,
-h1, h2, h3, a, p, figure, figcaption,
+h1, h2, h3, a, p, figure, figcaption, img,
 ul, li, div, button {
   margin: 0;
   border: 0;
@@ -54,10 +54,10 @@ section {
 
 .section-title {
   position: relative;
-  margin: 15px;
+  padding: 10px;
   color: #2C5F5D;
   font-family: "Bebas Neue";
-  font-size: 4em;
+  font-size: 2.5em;
 }
 .section-title::before {
   content: "⊣ ";
@@ -69,8 +69,8 @@ section {
 }
 
 section > p:first-of-type {
-  margin: 15px 15px 35px 15px;
-  font-size: 1.5em;
+  padding: 0 10px 10px 10px;
+  font-size: 1.2em;
   color: #A8A7A7;
 }
 
@@ -80,7 +80,8 @@ section > p:first-of-type {
 
 .invisible {
   opacity: 0;
-  transition: opacity 0.3s linear;
+  visibility: hidden;
+  transition: opacity 0.3s linear, visibility 0.3s 0.3s linear;
 }
 
 .text-wrapper p {
@@ -91,6 +92,7 @@ section > p:first-of-type {
 }
 
 img {
+  display: block;
   width: 100%;
   height: auto;
 }
@@ -106,7 +108,6 @@ img {
   flex-wrap: wrap;
   margin-top: 10px;
   height: 60px;
-  width: 60%;
 }
 .tech-stack li {
   flex: 1 0 33%;
@@ -127,7 +128,7 @@ img {
   fill: #A8A7A7;
 }
 
-.twitter-icon:hover {
+.x-icon:hover {
   fill: #1DA1F2;
 }
 
@@ -142,6 +143,14 @@ img {
 .email-icon:hover,
 .external-link-icon:hover {
   fill: #B41A4E;
+}
+
+.appear {
+  transition: opacity 0.5s linear, transform 0.5s linear;
+}
+.appear.appear-ready {
+  transform: translateY(60px);
+  opacity: 0;
 }
 
 body {
